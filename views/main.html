@@ -2,49 +2,56 @@
 <html lang="en">
 <head>
     <title>Document</title>
+
     <link rel="stylesheet" href="../lib/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../css/style.css"/>
+
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script src="../lib/js/jquery-3.4.1.min.js"></script>      
+    <script>if (window.module) module = window.module;</script>
 </head>
 <body>
     <div class="container">
-        <div class="row ">
+        <div class="row">
+
             <div class="col-sm">
-                <div class="canvas-container">
-                    <canvas>
-
-
-                    </canvas>
+                <div class="canvas-container w-100">
+                    <canvas id="main-canvas" width="300" height="300"></canvas>
                 </div>
             </div>
+
             <div class="col-sm">
                 <div class="inputs-container p-3">
                     <div class="form-group w-100">
                         <div class="row pt-3">
-                            <label for="x-size-input" class="mr-1">X Size: </label>
+                            <label for="x-size-input" class="mr-1">Rozmiar X:</label>
                         </div>
                         <div class="row">   
                             <input type="number" min="300" id="x-size-input" class="w-100"/>
                         </div>
                         <div class="row pt-3">   
-                            <label for="y-size-input" class="mr-1">Y Size: </label>
+                            <label for="y-size-input" class="mr-1">Rozmiar Y:</label>
                         </div>
                         <div class="row">   
                             <input type="number" min="300" id="y-size-input" class="w-100"/>
                         </div>
                         <div class="row pt-3">
-                            <label for="y-size-input" class="mr-1">Number of nucleons: </label>
+                            <label for="nucleons-input" class="mr-1">Ilość zarodków:</label>
                         </div>
                         <div class="row">   
                             <input type="number" id="nucleons-input" class="w-100"/>
                         </div>
                         <div class="row pt-4">  
-                            <button type="submit" class="ml-auto mr-auto">Start simulation</button>
+                            <button type="button" id="nucleons-button">Rozmieść zarodki</button>
+                            <button type="button" id="simulate-button">Symulacja</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="../lib/js/jquery-3.4.1.min.js"></script>
-    <script src="../lib/js/bootstrap.min.js.map"></script>
+    <script src="../scripts/main.js"></script>
+    <script src="../scripts/canvasMethods.js"></script>  
+    <script src="../scripts/eventHandlers.js"></script>
 </body>
 </html>
