@@ -23,35 +23,39 @@
             <div class="col-sm">
                 <div class="inputs-container p-3">
                     <div class="form-group w-100">
-                        <div class="row pt-3">
-                            <label for="x-size-input" class="mr-1">Rozmiar X:</label>
-                        </div>
-                        <div class="row">   
+                        <div>
+                            <label for="x-size-input" class="mr-1">Rozmiar X:</label> 
                             <input type="number" min="300" id="x-size-input" class="w-100"/>
                         </div>
-                        <div class="row pt-3">   
-                            <label for="y-size-input" class="mr-1">Rozmiar Y:</label>
-                        </div>
-                        <div class="row">   
+                        <div>   
+                            <label for="y-size-input" class="mr-1">Rozmiar Y:</label> 
                             <input type="number" min="300" id="y-size-input" class="w-100"/>
                         </div>
-                        <div class="row pt-3">
-                            <label for="nucleons-input" class="mr-1">Ilość zarodków:</label>
+                        <div class="radio">
+                            <label><input type="radio" name="optradio" value="manual">Ręczne rozmieszczenie zarodków</label>
                         </div>
-                        <div class="row">   
-                            <input type="number" id="nucleons-input" class="w-100"/>
+                        <div class="radio">
+                            <label><input type="radio" name="optradio" value="random">Losowe rozmieszczenie zarodków</label>
                         </div>
-                        <div class="row pt-4">  
-                            <button type="button" id="nucleons-button">Rozmieść zarodki</button>
-                            <button type="button" id="simulate-button">Symulacja</button>
+
+                        <div class="nucleons-amount-container d-none">
+                            <label for="nucleons-amount" class="mr-1">Ilość zarodków:</label>
+                            <input type="number" id="nucleons-amount" class="w-100"/>
                         </div>
+                        <div class="nucleons-size-container d-none">
+                            <label for="nucleons-size" class="mr-1">Rozmiar zarodków:</label>
+                            <input type="number" id="nucleons-size" class="w-100"/>
+                        </div>
+                        <button type="button" id="nucleons-button" class="d-none">Rozmieść zarodki</button>
                     </div>
                 </div>
             </div>
+            <button type="button" id="simulate-button">Symulacja</button>
         </div>
     </div>
     <script src="../scripts/main.js"></script>
-    <script src="../scripts/canvasMethods.js"></script>  
+    <script src="../scripts/helper.js"></script>
+    <script src="../scripts/canvasController.js"></script>  
     <script src="../scripts/eventHandlers.js"></script>
 </body>
 </html>

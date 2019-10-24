@@ -1,4 +1,14 @@
+html, body, .container {
+    height: 100%;
+}
+
 canvas {
     border: 1px solid black;
     border-radius: 3px;
+}
+
+#simulate-button {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
 }
