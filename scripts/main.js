@@ -30,39 +30,52 @@ function spreadNucleonsRandomly(amount, size) {
 
 function simulateGrainGrowth() {
     var neighborColors = [];
+    var stateForIteration = stateArray;
 
     for (var i=0; i < canvasWidth; i++) {
         for (var j=0; j < canvasHeight; j++) {
 
-            if (stateArray[i][j] == COLOR_WHITE) {
-                if (i != 0 && j != 0 && stateArray[i-1][j-1] != COLOR_WHITE) {
-                    neighborColors.push(stateArray[i-1][j-1]);
+            if (compareColors(stateForIteration[i][j], COLOR_WHITE)) {
+                if (i != 0 && j != 0 && !compareColors(stateForIteration[i-1][j-1], COLOR_WHITE)) {
+                    // neighborColors.push(stateForIteration[i-1][j-1]);
+                    stateArray[i][j] = stateForIteration[i-1][j-1];
+                    drawPixel(i, j, stateArray[i][j][0], stateArray[i][j][1], stateArray[i][j][2], 255);
+                
+                } else if (j != 0 && !compareColors(stateForIteration[i][j-1], COLOR_WHITE)) {
+                    // neighborColors.push(stateForIteration[i][j-1]);
+                    stateArray[i][j] = stateForIteration[i][j-1];
+                    drawPixel(i, j, stateArray[i][j][0], stateArray[i][j][1], stateArray[i][j][2], 255);
+                
+                } else if (i != canvasWidth - 1 && j != 0 && !compareColors(stateForIteration[i+1][j-1], COLOR_WHITE)) {
+                    // neighborColors.push(stateForIteration[i+1][j-1]);
+                    stateArray[i][j] = stateForIteration[i+1][j-1];
+                    drawPixel(i, j, stateArray[i][j][0], stateArray[i][j][1], stateArray[i][j][2], 255);
+                
+                } else if (i != canvasWidth - 1 && !compareColors(stateForIteration[i+1][j], COLOR_WHITE)) {
+                    // neighborColors.push(stateForIteration[i+1][j]);
+                    stateArray[i][j] = stateForIteration[i+1][j];
+                    drawPixel(i, j, stateArray[i][j][0], stateArray[i][j][1], stateArray[i][j][2], 255);
+                
+                } else if (i != canvasWidth - 1 && j != canvasHeight - 1 && !compareColors(stateForIteration[i+1][j+1], COLOR_WHITE)) {
+                    // neighborColors.push(stateForIteration[i+1][j+1]);
+                    stateArray[i][j] = stateForIteration[i+1][j+1];
+                    drawPixel(i, j, stateArray[i][j][0], stateArray[i][j][1], stateArray[i][j][2], 255);
+                
+                } else if (j != canvasHeight - 1 && !compareColors(stateForIteration[i][j+1], COLOR_WHITE)) {
+                    // neighborColors.push(stateForIteration[i][j+1]);
+                    stateArray[i][j] = stateForIteration[i][j+1];
+                    drawPixel(i, j, stateArray[i][j][0], stateArray[i][j][1], stateArray[i][j][2], 255);
+                
+                } else if (i != 0 && j != canvasHeight - 1 && !compareColors(stateForIteration[i-1][j+1], COLOR_WHITE)) {
+                    // neighborColors.push(stateForIteration[i-1][j+1]);
+                    stateArray[i][j] = stateForIteration[i-1][j+1];
+                    drawPixel(i, j, stateArray[i][j][0], stateArray[i][j][1], stateArray[i][j][2], 255);
+                
+                } else if (i != 0 && !compareColors(stateForIteration[i-1][j], COLOR_WHITE)) {
+                    // neighborColors.push(stateForIteration[i-1][j]);
+                    stateArray[i][j] = stateForIteration[i-1][j];
+                    drawPixel(i, j, stateArray[i][j][0], stateArray[i][j][1], stateArray[i][j][2], 255);
                 }
-                if (j != 0 && stateArray[i][j-1] != COLOR_WHITE) {
-                    neighborColors.push(stateArray[i][j-1]);
-                }
-                if (i != canvasWidth - 1 && j != 0 && stateArray[i+1][j-1] != COLOR_WHITE) {
-                    neighborColors.push(stateArray[i+1][j-1]);
-                }
-                if (i != canvasWidth - 1 && stateArray[i+1][j] != COLOR_WHITE) {
-                    neighborColors.push(stateArray[i+1][j]);
-                }
-                if (i != canvasWidth - 1 && j != canvasHeight - 1 && stateArray[i+1][j+1] != COLOR_WHITE) {
-                    neighborColors.push(stateArray[i+1][j+1]);
-                }
-                if (j != canvasHeight - 1 && stateArray[i][j+1] != COLOR_WHITE) {
-                    neighborColors.push(stateArray[i][j+1]);
-                }
-                if (i != 0 && j != canvasHeight - 1 && stateArray[i-1][j+1] != COLOR_WHITE) {
-                    neighborColors.push(stateArray[i-1][j+1]);
-                }
-                if (i != 0 && stateArray[i-1][j] != COLOR_WHITE) {
-                    neighborColors.push(stateArray[i-1][j]);
-                }
-
-                var newColor = getMostFrequentValue(neighborColors);
-                stateArray[i][j] = newColor;
-                drawPixel(i, j, newColor[0], newColor[2], newColor[2], 255);
             }
         }
     }
@@ -70,5 +83,6 @@ function simulateGrainGrowth() {
 }
  
 function startSimulation() {
-    window.requestAnimationFrame(simulateGrainGrowth);
+    window.requestAnimationFrame(startSimulation);
+    simulateGrainGrowth();
 }
