@@ -30,52 +30,50 @@ function spreadNucleonsRandomly(amount, size) {
 
 function simulateGrainGrowth() {
     var neighborColors = [];
-    var stateForIteration = stateArray;
+    var stateForIteration = JSON.parse(JSON.stringify(stateArray));
 
-    for (var i=0; i < canvasWidth; i++) {
-        for (var j=0; j < canvasHeight; j++) {
+    // TODO: change color to the one that's most frequent in the neighborhood
+    // TODO: add neighborhood types and create a method for handling each of them
+    // TODO: add nucleon shapes
+    // TODO: improve nucleons' adding
+    // TODO: find a new way of storing colors
 
-            if (compareColors(stateForIteration[i][j], COLOR_WHITE)) {
-                if (i != 0 && j != 0 && !compareColors(stateForIteration[i-1][j-1], COLOR_WHITE)) {
-                    // neighborColors.push(stateForIteration[i-1][j-1]);
+    for (var i=1; i < canvasWidth-1; i++) {
+        for (var j=1; j < canvasHeight-1; j++) {
+            
+            if(compareColors(stateForIteration[i][j], COLOR_WHITE)) {
+                if (!compareColors(stateForIteration[i-1][j-1], COLOR_WHITE)) {
                     stateArray[i][j] = stateForIteration[i-1][j-1];
                     drawPixel(i, j, stateArray[i][j][0], stateArray[i][j][1], stateArray[i][j][2], 255);
-                
-                } else if (j != 0 && !compareColors(stateForIteration[i][j-1], COLOR_WHITE)) {
-                    // neighborColors.push(stateForIteration[i][j-1]);
+
+                } else if (!compareColors(stateForIteration[i][j-1], COLOR_WHITE)) {
                     stateArray[i][j] = stateForIteration[i][j-1];
                     drawPixel(i, j, stateArray[i][j][0], stateArray[i][j][1], stateArray[i][j][2], 255);
-                
-                } else if (i != canvasWidth - 1 && j != 0 && !compareColors(stateForIteration[i+1][j-1], COLOR_WHITE)) {
-                    // neighborColors.push(stateForIteration[i+1][j-1]);
+
+                } else if (!compareColors(stateForIteration[i+1][j-1], COLOR_WHITE)) {
                     stateArray[i][j] = stateForIteration[i+1][j-1];
                     drawPixel(i, j, stateArray[i][j][0], stateArray[i][j][1], stateArray[i][j][2], 255);
-                
-                } else if (i != canvasWidth - 1 && !compareColors(stateForIteration[i+1][j], COLOR_WHITE)) {
-                    // neighborColors.push(stateForIteration[i+1][j]);
+
+                } else if (!compareColors(stateForIteration[i+1][j], COLOR_WHITE)) {
                     stateArray[i][j] = stateForIteration[i+1][j];
                     drawPixel(i, j, stateArray[i][j][0], stateArray[i][j][1], stateArray[i][j][2], 255);
-                
-                } else if (i != canvasWidth - 1 && j != canvasHeight - 1 && !compareColors(stateForIteration[i+1][j+1], COLOR_WHITE)) {
-                    // neighborColors.push(stateForIteration[i+1][j+1]);
+
+                } else if (!compareColors(stateForIteration[i+1][j+1], COLOR_WHITE)) {
                     stateArray[i][j] = stateForIteration[i+1][j+1];
                     drawPixel(i, j, stateArray[i][j][0], stateArray[i][j][1], stateArray[i][j][2], 255);
-                
-                } else if (j != canvasHeight - 1 && !compareColors(stateForIteration[i][j+1], COLOR_WHITE)) {
-                    // neighborColors.push(stateForIteration[i][j+1]);
+
+                } else if (!compareColors(stateForIteration[i][j+1], COLOR_WHITE)) {
                     stateArray[i][j] = stateForIteration[i][j+1];
                     drawPixel(i, j, stateArray[i][j][0], stateArray[i][j][1], stateArray[i][j][2], 255);
-                
-                } else if (i != 0 && j != canvasHeight - 1 && !compareColors(stateForIteration[i-1][j+1], COLOR_WHITE)) {
-                    // neighborColors.push(stateForIteration[i-1][j+1]);
+
+                } else if (!compareColors(stateForIteration[i-1][j+1], COLOR_WHITE)) {
                     stateArray[i][j] = stateForIteration[i-1][j+1];
                     drawPixel(i, j, stateArray[i][j][0], stateArray[i][j][1], stateArray[i][j][2], 255);
-                
-                } else if (i != 0 && !compareColors(stateForIteration[i-1][j], COLOR_WHITE)) {
-                    // neighborColors.push(stateForIteration[i-1][j]);
+
+                } else if (!compareColors(stateForIteration[i-1][j], COLOR_WHITE)) {
                     stateArray[i][j] = stateForIteration[i-1][j];
                     drawPixel(i, j, stateArray[i][j][0], stateArray[i][j][1], stateArray[i][j][2], 255);
-                }
+                } 
             }
         }
     }
