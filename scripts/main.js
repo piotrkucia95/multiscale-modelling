@@ -38,6 +38,7 @@ function simulateGrainGrowth() {
     // TODO: improve nucleons' adding
     // TODO: find a new way of storing colors
 
+<<<<<<< Updated upstream
     for (var i=1; i < canvasWidth-1; i++) {
         for (var j=1; j < canvasHeight-1; j++) {
             
@@ -75,12 +76,17 @@ function simulateGrainGrowth() {
                     drawPixel(i, j, stateArray[i][j][0], stateArray[i][j][1], stateArray[i][j][2], 255);
                 } 
             }
+=======
+>>>>>>> Stashed changes
         }
     }
+
     updateCanvas();
 }
  
 function startSimulation() {
-    window.requestAnimationFrame(startSimulation);
-    simulateGrainGrowth();
+    // window.requestAnimationFrame(startSimulation);
+    // simulateGrainGrowth();
+
+    window.requestAnimationFrame(simulateGrainGrowth);
 }
