@@ -31,6 +31,10 @@ app.on('ready', function() {
     Menu.setApplicationMenu(mainMenu);
 });
 
+ipcMain.on('canvas:create', function(e, width, height) {
+    mainWindow.setSize(width, height);
+});
+
 const mainMenuTemplate = [
     {
         label: 'File',

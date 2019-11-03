@@ -15,9 +15,7 @@
         <div class="row">
 
             <div class="col-sm">
-                <div class="canvas-container w-100">
-                    <canvas id="main-canvas" width="300" height="300"></canvas>
-                </div>
+                <div class="canvas-container w-100"></div>
             </div>
 
             <div class="col-sm">
@@ -31,6 +29,7 @@
                             <label for="y-size-input" class="mr-1">Rozmiar Y:</label> 
                             <input type="number" min="300" id="y-size-input" class="w-100"/>
                         </div>
+                        <button type="button" id="size-button">Rozmieść zarodki</button>
                         <div class="radio">
                             <label><input type="radio" name="optradio" value="manual">Ręczne rozmieszczenie zarodków</label>
                         </div>
@@ -45,6 +44,14 @@
                         <div class="nucleons-size-container d-none">
                             <label for="nucleons-size" class="mr-1">Rozmiar zarodków:</label>
                             <input type="number" id="nucleons-size" class="w-100"/>
+                        </div>
+                        <div class="nucleons-shape-container d-none">
+                            <label for="nucleons-shape" class="mr-1">Kształt zarodków:</label>
+                            <select class="form-control" id="nucleons-shape">
+                                <option value="0">losowo</option>
+                                <option value="1">&#9679 - okrągły</option>
+                                <option value="2">&#9632 - kwaddratowy</option>
+                              </select>
                         </div>
                         <button type="button" id="nucleons-button" class="d-none">Rozmieść zarodki</button>
                     </div>

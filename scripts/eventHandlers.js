@@ -1,6 +1,7 @@
 $('#main-canvas').on('click', (event) => {
     var nucleonSize = $('#nucleons-size').val();
-    addNucleon(event.offsetX, event.offsetY, nucleonSize);
+    var nucleonsShape = $('#nucleons-shape').val();
+    addNucleon(event.offsetX, event.offsetY, nucleonSize, nucleonsShape);
     updateCanvas();
 });
 
@@ -11,7 +12,8 @@ $('#simulate-button').on('click', () => {
 $('#nucleons-button').on('click', ()=> {
     var numberOfNucleons = $('#nucleons-amount').val();
     var sizeOfNucleons = $('#nucleons-size').val();
-    spreadNucleonsRandomly(numberOfNucleons, sizeOfNucleons);
+    var shapeOfNucleons = $('#nucleons-shape').val();
+    spreadNucleonsRandomly(numberOfNucleons, sizeOfNucleons, shapeOfNucleons);
 });
 
 $('input[name="optradio"]').on('click', (event) => {
@@ -19,11 +21,13 @@ $('input[name="optradio"]').on('click', (event) => {
         $('.nucleons-amount-container').addClass('d-none');
         $('.nucleons-size-container label').text('Rozmiar zarodka:');
         $('.nucleons-size-container').removeClass('d-none');
+        $('.nucleons-shape-container').removeClass('d-none');
         $('#nucleons-button').addClass('d-none');
     } else {
         $('.nucleons-size-container').removeClass('d-none');
         $('.nucleons-size-container label').text('Rozmiar zarodków:');
         $('.nucleons-amount-container').removeClass('d-none');
+        $('.nucleons-shape-container').removeClass('d-none');
         $('#nucleons-button').removeClass('d-none');
     }
 });

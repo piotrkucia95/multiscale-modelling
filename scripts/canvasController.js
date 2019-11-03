@@ -4,6 +4,10 @@ var canvasWidth     = canvas.width;
 var canvasHeight    = canvas.height;
 var canvasData      = context.createImageData(canvasWidth, canvasHeight);
 
+function createCanvas (width, height) {
+    $('.canvas-container').append('<canvas id="main-canvas" width="300" height="300"></canvas>');
+}
+
 function drawPixel (x, y, r, g, b, a) {
     var index = (x + y * canvasWidth) * 4;
 
@@ -13,6 +17,6 @@ function drawPixel (x, y, r, g, b, a) {
     canvasData.data[index + 3] = a;  // Alpha
 }
 
-function updateCanvas() {
+function updateCanvas () {
     context.putImageData(canvasData, 0, 0);
 }

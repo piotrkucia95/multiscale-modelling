@@ -1,4 +1,7 @@
 const COLOR_WHITE = [255, 255, 255];
+const SHAPE_RANDOM = 0;
+const SHAPE_ROUND = 1;
+const SHAPE_SQUARE = 2;
 
 function getRandomColor() {
     var red = Math.floor(Math.random() * 256);
@@ -8,18 +11,18 @@ function getRandomColor() {
     return [red, green, blue];
 }
 
-function getMostFrequentValue(array) {
-    if (array.length == 0) return null;
+function getMostFrequentColor(colorArray) {
+    if (colorArray.length == 0) return null;
 
     var m = 0;
     var maxCount = 1;
-    var item = array[0];
-    for (var i=0; i<array.length; i++) {
-        for (var j=i; j<array.length; j++) {
-            if (JSON.stringify(array[i]) == JSON.stringify(array[j])) m++;
+    var item = colorArray[0];
+    for (var i=0; i<colorArray.length; i++) {
+        for (var j=i; j<colorArray.length; j++) {
+            if (JSON.stringify(colorArray[i]) == JSON.stringify(colorArray[j])) m++;
             if (maxCount < m) {
                 maxCount = m; 
-                item = array[i];
+                item = colorArray[i];
             }
         }
         m=0;
