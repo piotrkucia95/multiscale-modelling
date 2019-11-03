@@ -4,14 +4,19 @@ const path      = require('path');
 
 const {app, BrowserWindow, Menu, ipcMain} = electron;
 
+const INITIAL_WIDTH = 400;
+const INITIAL_HEIGHT = 600;
+
 // SET ENV
 // process.env.NODE_ENV = 'production';
 
 let mainWindow;
-let addWindow;
 
 app.on('ready', function() {
     mainWindow = new BrowserWindow({
+        width: INITIAL_WIDTH,
+        height: INITIAL_HEIGHT,
+        resizable: false,
         webPreferences: {
             nodeIntegration: true
         }
@@ -32,7 +37,19 @@ app.on('ready', function() {
 });
 
 ipcMain.on('canvas:create', function(e, width, height) {
-    mainWindow.setSize(width, height);
+    var newWidth = parseInt(width) + INITIAL_WIDTH;
+    var newHeight = parseInt(height) > INITIAL_HEIGHT - 100 ? parseInt(height) + 100 : INITIAL_HEIGHT;
+    mainWindow.setSize(newWidth, newHeight);
+});
+
+ipcMain.on('export:enable', function(e) {
+    mainMenuTemplate[0].submenu[0].submenu[1].enabled = true;
+    const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
+    Menu.setApplicationMenu(mainMenu);
+});
+
+ipcMain.on('export:disable', function(e) {
+    mainMenuTemplate[0].submenu[0].submenu[1].enabled = false;
 });
 
 const mainMenuTemplate = [
@@ -49,12 +66,16 @@ const mainMenuTemplate = [
                         }
                     }, {
                         label: 'Export',
+                        enabled: false,
                         click() {
                             console.log('Export placeholder');
                         }
                     }
                 ]
             },
+            {
+                role: 'reload'
+            }
         ]
     }
 ];
@@ -76,7 +97,7 @@ if (process.env.NODE_ENV != 'production') {
                 }
             },
             {
-                role: 'reload'
+                role: 'reload',
             }
         ]
     });

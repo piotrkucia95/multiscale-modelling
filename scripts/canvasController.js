@@ -1,11 +1,19 @@
-var canvas          = document.getElementById("main-canvas"); 
-var context         = canvas.getContext("2d");
-var canvasWidth     = canvas.width;
-var canvasHeight    = canvas.height;
-var canvasData      = context.createImageData(canvasWidth, canvasHeight);
+var canvas;
+var context;
+var canvasWidth;
+var canvasHeight;
+var canvasData;
 
 function createCanvas (width, height) {
-    $('.canvas-container').append('<canvas id="main-canvas" width="300" height="300"></canvas>');
+    $('.canvas-container').append('<canvas id="main-canvas" width="' + width + '" height="' + height + '"></canvas>');
+    
+    canvas = document.getElementById("main-canvas");
+    context = canvas.getContext("2d");
+    canvasData = context.createImageData(width, height);
+    canvasWidth = width;
+    canvasHeight = height;
+
+    ipcRenderer.send('canvas:create', width, height);
 }
 
 function drawPixel (x, y, r, g, b, a) {

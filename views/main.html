@@ -14,11 +14,11 @@
     <div class="container">
         <div class="row">
 
-            <div class="col-sm">
+            <div class="col canvas-column d-none">
                 <div class="canvas-container w-100"></div>
             </div>
 
-            <div class="col-sm">
+            <div class="col">
                 <div class="inputs-container p-3">
                     <div class="form-group w-100">
                         <div>
@@ -29,35 +29,35 @@
                             <label for="y-size-input" class="mr-1">Rozmiar Y:</label> 
                             <input type="number" min="300" id="y-size-input" class="w-100"/>
                         </div>
-                        <button type="button" id="size-button">Rozmieść zarodki</button>
+                        <button type="button" id="size-button">Utwórz planszę</button>
                         <div class="radio">
-                            <label><input type="radio" name="optradio" value="manual">Ręczne rozmieszczenie zarodków</label>
+                            <label><input type="radio" name="optradio" value="manual" disabled>Ręczne rozmieszczenie zarodków</label>
                         </div>
                         <div class="radio">
-                            <label><input type="radio" name="optradio" value="random">Losowe rozmieszczenie zarodków</label>
+                            <label><input type="radio" name="optradio" value="random" disabled>Losowe rozmieszczenie zarodków</label>
                         </div>
 
-                        <div class="nucleons-amount-container d-none">
+                        <div class="nucleons-amount-container">
                             <label for="nucleons-amount" class="mr-1">Ilość zarodków:</label>
-                            <input type="number" id="nucleons-amount" class="w-100"/>
+                            <input type="number" id="nucleons-amount" class="w-100" disabled/>
                         </div>
-                        <div class="nucleons-size-container d-none">
+                        <div class="nucleons-size-container">
                             <label for="nucleons-size" class="mr-1">Rozmiar zarodków:</label>
-                            <input type="number" id="nucleons-size" class="w-100"/>
+                            <input type="number" id="nucleons-size" class="w-100" disabled/>
                         </div>
-                        <div class="nucleons-shape-container d-none">
+                        <div class="nucleons-shape-container">
                             <label for="nucleons-shape" class="mr-1">Kształt zarodków:</label>
-                            <select class="form-control" id="nucleons-shape">
+                            <select class="form-control" id="nucleons-shape" disabled>
                                 <option value="0">losowo</option>
                                 <option value="1">&#9679 - okrągły</option>
                                 <option value="2">&#9632 - kwaddratowy</option>
                               </select>
                         </div>
-                        <button type="button" id="nucleons-button" class="d-none">Rozmieść zarodki</button>
+                        <button type="button" id="nucleons-button" disabled>Rozmieść zarodki</button>
+                        <button type="button" id="simulate-button" disabled>Symulacja</button>
                     </div>
                 </div>
             </div>
-            <button type="button" id="simulate-button">Symulacja</button>
         </div>
     </div>
     <script src="../scripts/main.js"></script>

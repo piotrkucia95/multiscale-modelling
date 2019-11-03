@@ -19,13 +19,13 @@ function getMostFrequentColor(colorArray) {
     var item = colorArray[0];
     for (var i=0; i<colorArray.length; i++) {
         for (var j=i; j<colorArray.length; j++) {
-            if (JSON.stringify(colorArray[i]) == JSON.stringify(colorArray[j])) m++;
+            if (colorArray[i] == colorArray[j]) m++;
             if (maxCount < m) {
                 maxCount = m; 
                 item = colorArray[i];
             }
         }
-        m=0;
+        m = 0;
     }
     return item;
 }
