@@ -1,6 +1,8 @@
-const electron  = require('electron');
-const url       = require('url');
-const path      = require('path');
+const electron              = require('electron');
+const url                   = require('url');
+const path                  = require('path');
+const fs                    = require('fs');
+const bitmapManipulation    = require('bitmap-manipulation');
 
 const {app, BrowserWindow, Menu, ipcMain} = electron;
 
@@ -11,6 +13,7 @@ const INITIAL_HEIGHT = 600;
 // process.env.NODE_ENV = 'production';
 
 let mainWindow;
+let stateArray;
 
 app.on('ready', function() {
     mainWindow = new BrowserWindow({
@@ -42,14 +45,15 @@ ipcMain.on('canvas:create', function(e, width, height) {
     mainWindow.setSize(newWidth, newHeight);
 });
 
-ipcMain.on('export:enable', function(e) {
-    mainMenuTemplate[0].submenu[0].submenu[1].enabled = true;
+ipcMain.on('export:enable', function(e, states) {
+    stateArray = states;
+    mainMenuTemplate[1].submenu[1].enabled = true;
     const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
     Menu.setApplicationMenu(mainMenu);
 });
 
 ipcMain.on('export:disable', function(e) {
-    mainMenuTemplate[0].submenu[0].submenu[1].enabled = false;
+    mainMenuTemplate[1].submenu[1].enabled = false;
 });
 
 const mainMenuTemplate = [
@@ -57,24 +61,43 @@ const mainMenuTemplate = [
         label: 'File',
         submenu: [
             {
-                label: 'Microstructure',
-                submenu: [
-                    {
-                        label: 'Import',
-                        click() {
-                            console.log('Import placeholder');
-                        }
-                    }, {
-                        label: 'Export',
-                        enabled: false,
-                        click() {
-                            console.log('Export placeholder');
+                label: 'Reload',
+                accelerator: process.platform == 'darwin' ? 'Command+R' : 'Ctrl+R',
+                click() {
+                    app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) });
+                    app.quit();
+                }
+            }, 
+            {
+                label: 'Quit',
+                accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctrl+Q',
+                click() {
+                    app.quit();
+                }
+            }
+        ]
+    }, {
+        label: 'Microstructure',
+        submenu: [
+            {
+                label: 'Import',
+                click() {
+                    console.log('Import placeholder');
+                }
+            }, {
+                label: 'Export',
+                enabled: false,
+                click() {
+                    var stream = fs.createWriteStream("data.txt", {flags:'w'});
+                    var data = stateArray.length + ' ' + stateArray[0].length + ' 1\n';
+
+                    for(var i = 0; i < stateArray.length; i++) {
+                        for(var j = 0; j < stateArray[i].length; j++) {
+                            data = i + ' ' + j + ' 0 ' + stateArray[i][j] + '\n';
+                            stream.write(data);
                         }
                     }
-                ]
-            },
-            {
-                role: 'reload'
+                }
             }
         ]
     }
@@ -96,9 +119,6 @@ if (process.env.NODE_ENV != 'production') {
                     focusedWindow.toggleDevTools();
                 }
             },
-            {
-                role: 'reload',
-            }
         ]
     });
 }

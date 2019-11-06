@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/piotrkucia95/multiscale-modelling#readme",
   "dependencies": {
+    "bitmap-manipulation": "^2.0.0",
     "electron": "^6.0.12"
   }
 }

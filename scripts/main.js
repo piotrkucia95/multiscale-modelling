@@ -92,6 +92,6 @@ function startSimulation() {
     if (JSON.stringify(currentState) != JSON.stringify(stateArray)) {
         window.requestAnimationFrame(startSimulation);
     } else {
-        ipcRenderer.send('export:enable');
+        ipcRenderer.send('export:enable', stateArray, colorArray);
     }
 }
