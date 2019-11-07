@@ -18,6 +18,6 @@
   "homepage": "https://github.com/piotrkucia95/multiscale-modelling#readme",
   "dependencies": {
     "electron": "^6.0.12",
-    "jimp": "^0.8.5"
+    "file-saver": "^2.0.2"
   }
 }

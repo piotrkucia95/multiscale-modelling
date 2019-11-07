@@ -1,5 +1,3 @@
-const electron = require('electron');
-const {ipcRenderer} = electron;
 var stateArray = [];
 var colorArray = [];
 
@@ -92,6 +90,6 @@ function startSimulation() {
     if (JSON.stringify(currentState) != JSON.stringify(stateArray)) {
         window.requestAnimationFrame(startSimulation);
     } else {
-        ipcRenderer.send('export:enable', stateArray, colorArray);
+        enableCanvasExport();
     }
 }

@@ -1,10 +1,8 @@
 const electron      = require('electron');
 const url           = require('url');
 const path          = require('path');
-const fs            = require('fs');
-const jimp          = require('jimp');
 
-const {app, BrowserWindow, Menu, ipcMain} = electron;
+const {app, BrowserWindow, Menu, ipcMain, dialog} = electron;
 
 const INITIAL_WIDTH = 400;
 const INITIAL_HEIGHT = 600;
@@ -13,7 +11,6 @@ const INITIAL_HEIGHT = 600;
 // process.env.NODE_ENV = 'production';
 
 let mainWindow;
-let stateArray;
 
 app.on('ready', function() {
     mainWindow = new BrowserWindow({
@@ -45,8 +42,7 @@ ipcMain.on('canvas:create', function(e, width, height) {
     mainWindow.setSize(newWidth, newHeight);
 });
 
-ipcMain.on('export:enable', function(e, states) {
-    stateArray = states;
+ipcMain.on('export:enable', function(e, blob, states, ) {
     mainMenuTemplate[1].submenu[1].enabled = true;
     const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
     Menu.setApplicationMenu(mainMenu);
@@ -82,25 +78,30 @@ const mainMenuTemplate = [
             {
                 label: 'Import',
                 click() {
-                    console.log('Import placeholder');
+                    dialog.showOpenDialog([], {
+                        openFile: true
+                    }).then(function(file) {
+                        mainWindow.webContents.send('canvas:import', file.filePaths[0]);
+                    }).catch(function(error) {
+                        console.log(error);
+                    });
                 }
             }, {
                 label: 'Export',
                 enabled: false,
-                click() {
-                    var txtStream = fs.createWriteStream("data.txt", {flags:'w'});
-                    var bmpStream = fs.createWriteStream("data.bmp", {flags:'w'});
-
-                    var txtData = stateArray.length + ' ' + stateArray[0].length + ' 1\n';
-
-                    for(var i = 0; i < stateArray.length; i++) {
-                        for(var j = 0; j < stateArray[i].length; j++) {
-                            txtData = i + ' ' + j + ' 0 ' + stateArray[i][j] + '\n';
-                            txtStream.write(txtData);
-
+                submenu: [
+                    {
+                        label: 'TXT',
+                        click() {
+                            mainWindow.webContents.send('canvas:export:txt');
+                        }
+                    }, {
+                        label: 'BMP',
+                        click() {
+                            mainWindow.webContents.send('canvas:export:bmp');
                         }
                     }
-                }
+                ]
             }
         ]
     }

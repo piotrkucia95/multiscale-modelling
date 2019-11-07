@@ -46,10 +46,6 @@ $('input[name="optradio"]').on('click', (event) => {
     }
 });
 
-$('#export-button').on('click', () => {
-    exportCanvasToBmp();
-});
-
 function addCanvasOnclickHandler() {
     $('#main-canvas').on('click', (event) => {
         if (isCanvasDrawable) {
