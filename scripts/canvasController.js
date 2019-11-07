@@ -28,3 +28,8 @@ function drawPixel (x, y, r, g, b, a) {
 function updateCanvas () {
     context.putImageData(canvasData, 0, 0);
 }
+
+function exportCanvasToBmp () {
+    var image = canvas.toDataURL("image/bmp");
+    console.log(image);
+}

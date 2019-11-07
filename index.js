@@ -1,8 +1,8 @@
-const electron              = require('electron');
-const url                   = require('url');
-const path                  = require('path');
-const fs                    = require('fs');
-const bitmapManipulation    = require('bitmap-manipulation');
+const electron      = require('electron');
+const url           = require('url');
+const path          = require('path');
+const fs            = require('fs');
+const jimp          = require('jimp');
 
 const {app, BrowserWindow, Menu, ipcMain} = electron;
 
@@ -88,13 +88,16 @@ const mainMenuTemplate = [
                 label: 'Export',
                 enabled: false,
                 click() {
-                    var stream = fs.createWriteStream("data.txt", {flags:'w'});
-                    var data = stateArray.length + ' ' + stateArray[0].length + ' 1\n';
+                    var txtStream = fs.createWriteStream("data.txt", {flags:'w'});
+                    var bmpStream = fs.createWriteStream("data.bmp", {flags:'w'});
+
+                    var txtData = stateArray.length + ' ' + stateArray[0].length + ' 1\n';
 
                     for(var i = 0; i < stateArray.length; i++) {
                         for(var j = 0; j < stateArray[i].length; j++) {
-                            data = i + ' ' + j + ' 0 ' + stateArray[i][j] + '\n';
-                            stream.write(data);
+                            txtData = i + ' ' + j + ' 0 ' + stateArray[i][j] + '\n';
+                            txtStream.write(txtData);
+
                         }
                     }
                 }
