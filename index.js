@@ -81,7 +81,14 @@ const mainMenuTemplate = [
                     dialog.showOpenDialog([], {
                         openFile: true
                     }).then(function(file) {
-                        mainWindow.webContents.send('canvas:import', file.filePaths[0]);
+                        var filePath = file.filePaths[0];
+                        if (filePath.includes('.txt')) {
+                            mainWindow.webContents.send('canvas:import:txt', filePath);
+                        } else if (filePath.includes('.bmp')) {
+                            mainWindow.webContents.send('canvas:import:bmp', filePath);
+                        } else {
+                            mainWindow.webContents.send('error', '');
+                        }
                     }).catch(function(error) {
                         console.log(error);
                     });

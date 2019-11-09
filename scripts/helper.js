@@ -1,4 +1,4 @@
-const COLOR_WHITE = [255, 255, 255];
+const COLOR_WHITE = [0, 0, 0];
 const SHAPE_RANDOM = 0;
 const SHAPE_ROUND = 1;
 const SHAPE_SQUARE = 2;

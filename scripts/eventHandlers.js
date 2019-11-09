@@ -6,14 +6,6 @@ $('#size-button').on('click', (event) => {
     createCanvas(width, height);
     initializeStateArray(width, height);
     addCanvasOnclickHandler();
-
-    $('.canvas-column').removeClass('d-none');
-
-    $('#x-size-input').attr('disabled', true);
-    $('#y-size-input').attr('disabled', true);
-    $('#size-button').attr('disabled', true);
-    $('input[name="optradio"]').prop('disabled', false);
-    $('#simulate-button').prop('disabled', false);
 });
 
 $('#simulate-button').on('click', () => {

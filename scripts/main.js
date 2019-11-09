@@ -2,6 +2,8 @@ var stateArray = [];
 var colorArray = [];
 
 function initializeStateArray(width, height) {
+    stateArray = [];
+    colorArray = [];
     colorArray.push(COLOR_WHITE);
     for (var i=0; i <= width; i++) {
         stateArray[i] = [];
