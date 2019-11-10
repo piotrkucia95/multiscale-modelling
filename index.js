@@ -84,8 +84,8 @@ const mainMenuTemplate = [
                         var filePath = file.filePaths[0];
                         if (filePath.includes('.txt')) {
                             mainWindow.webContents.send('canvas:import:txt', filePath);
-                        } else if (filePath.includes('.bmp')) {
-                            mainWindow.webContents.send('canvas:import:bmp', filePath);
+                        } else if (filePath.includes('.bmp') || filePath.includes('.png') || filePath.includes('.jpg') || filePath.includes('.jpeg')) {
+                            mainWindow.webContents.send('canvas:import:img', filePath);
                         } else {
                             mainWindow.webContents.send('error', '');
                         }
@@ -103,9 +103,9 @@ const mainMenuTemplate = [
                             mainWindow.webContents.send('canvas:export:txt');
                         }
                     }, {
-                        label: 'BMP',
+                        label: 'IMAGE',
                         click() {
-                            mainWindow.webContents.send('canvas:export:bmp');
+                            mainWindow.webContents.send('canvas:export:img');
                         }
                     }
                 ]

@@ -8,42 +8,45 @@ $('#size-button').on('click', (event) => {
     addCanvasOnclickHandler();
 });
 
-$('#simulate-button').on('click', () => {
-    startSimulation();
-    isCanvasDrawable = false;
+$('input[name="optradio"]').on('click', (event) => {
+    if(event.target.value === 'manual') {
+        $('#grains-number').attr('disabled', true);
+        $('#grains-button').attr('disabled', true);
+        isCanvasDrawable = true;
+    } else {
+        $('#grains-number').prop('disabled', false);
+        $('#grains-button').prop('disabled', false);
+        isCanvasDrawable = false;
+    }
+});
+
+$('#grains-button').on('click', ()=> {
+    var numberOfGrains = $('#grains-number').val();
+    spreadNucleonsRandomly(numberOfGrains, 1, SHAPE_SQUARE, false);
 });
 
 $('#nucleons-button').on('click', ()=> {
-    var numberOfNucleons = $('#nucleons-amount').val();
+    var numberOfNucleons = $('#nucleons-number').val();
     var sizeOfNucleons = $('#nucleons-size').val();
     var shapeOfNucleons = $('#nucleons-shape').val();
-    spreadNucleonsRandomly(numberOfNucleons, sizeOfNucleons, shapeOfNucleons);
+
+    if (isMicrostructureGenerated) {
+        spreadNucleonsOnGrainBoundaries(numberOfNucleons, sizeOfNucleons, shapeOfNucleons, true);
+    } else {
+        spreadNucleonsRandomly(numberOfNucleons, sizeOfNucleons, shapeOfNucleons, true);
+    }
 });
 
-$('input[name="optradio"]').on('click', (event) => {
-    if(event.target.value === 'manual') {
-        $('.nucleons-size-container label').text('Rozmiar zarodka:');
-        $('#nucleons-amount').attr('disabled', true);
-        $('#nucleons-size').prop('disabled', false);
-        $('#nucleons-shape').prop('disabled', false);
-        $('#nucleons-button').attr('disabled', true);
-        isCanvasDrawable = true;
-    } else {
-        $('.nucleons-size-container label').text('Rozmiar zarodków:');
-        $('#nucleons-size').prop('disabled', false);
-        $('#nucleons-amount').prop('disabled', false);
-        $('#nucleons-shape').prop('disabled', false);
-        $('#nucleons-button').prop('disabled', false);
-        isCanvasDrawable = false;
-    }
+$('#simulate-button').on('click', () => {
+    var neighborhoodType = $('#neighborhood-type').val();
+    startSimulation( parseInt(neighborhoodType) );
+    isCanvasDrawable = false;
 });
 
 function addCanvasOnclickHandler() {
     $('#main-canvas').on('click', (event) => {
         if (isCanvasDrawable) {
-            var nucleonSize = $('#nucleons-size').val();
-            var nucleonsShape = $('#nucleons-shape').val();
-            addNucleon(event.offsetX, event.offsetY, nucleonSize, nucleonsShape);
+            addNucleon(event.offsetX, event.offsetY, 1, SHAPE_SQUARE, false);
             updateCanvas();
         }
     });

@@ -26,6 +26,11 @@ function createCanvas (width, height) {
     $('#size-button').attr('disabled', true);
     $('input[name="optradio"]').prop('disabled', false);
     $('#simulate-button').prop('disabled', false);
+    $('#neighborhood-type').prop('disabled', false);
+    $('#nucleons-number').prop('disabled', false);
+    $('#nucleons-size').prop('disabled', false);
+    $('#nucleons-shape').prop('disabled', false);
+    $('#nucleons-button').prop('disabled', false);
 
     ipcRenderer.send('canvas:create', width, height);
 }
@@ -44,6 +49,7 @@ function updateCanvas () {
 }
 
 function enableCanvasExport () {
+    isMicrostructureGenerated = true;
     ipcRenderer.send('export:enable');
 }
 
@@ -59,26 +65,26 @@ ipcRenderer.on('canvas:import:txt', function (e, filePath) {
             createCanvas(lineParams[0], lineParams[1]);
             initializeStateArray(lineParams[0], lineParams[1]);
         } else if (lineParams.length == 6) {
-            // var isColorInArray = false;
-            // for (var c = 0; c < colorArray.length; c++) {
-            //     if (colorArray[c][0] == lineParams[3] && colorArray[c][1] == lineParams[4] && colorArray[c][2] == lineParams[5]) {
-            //         isColorInArray = true;
-            //     }
-            // }
-            // if (!isColorInArray) colorArray.push(parseInt(lineParams[2]));
-
             stateArray[lineParams[0]][lineParams[1]] = lineParams[2];
-            if (lineParams[0] == 150) debugger;
             drawPixel(parseInt(lineParams[0]), parseInt(lineParams[1]), parseInt(lineParams[3]), parseInt(lineParams[4]), parseInt(lineParams[5]), 255);
+            var isColorInArray = false;
+            for (var c = 0; c < colorArray.length; c++) {
+                if (colorArray[c][0] == lineParams[3] && colorArray[c][1] == lineParams[4] && colorArray[c][2] == lineParams[5]) {
+                    isColorInArray = true;
+                    break;
+                }
+            }
+            if (!isColorInArray) colorArray.push([parseInt(lineParams[3]), parseInt(lineParams[4]), parseInt(lineParams[5])]);
         }
     });
 
     lineReader.on('close', function () {
         updateCanvas();
+        enableCanvasExport();
     });
 });
 
-ipcRenderer.on('canvas:import:bmp', function (e, filePath) {
+ipcRenderer.on('canvas:import:img', function (e, filePath) {
     var img1 = new Image();
 
     img1.onload = function () {
@@ -111,8 +117,8 @@ ipcRenderer.on('canvas:import:bmp', function (e, filePath) {
             x++;
         }
     };
-
     img1.src = filePath;
+    enableCanvasExport();
 });
 
 ipcRenderer.on('canvas:export:txt', function (e) {
@@ -127,7 +133,7 @@ ipcRenderer.on('canvas:export:txt', function (e) {
     fileSaver.saveAs(file);
 });
 
-ipcRenderer.on('canvas:export:bmp', function (e) {
+ipcRenderer.on('canvas:export:img', function (e) {
     canvas.toBlob(function(blob) {
         saveAs(blob, 'microstructure.bmp');
     });

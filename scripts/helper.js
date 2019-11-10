@@ -1,4 +1,10 @@
-const COLOR_WHITE = [0, 0, 0];
+const COLOR_WHITE = [255, 255, 255];
+const COLOR_BLACK = [0, 0, 0];
+
+const TYPE_MOORE = 0;
+const TYPE_VON_NEUMANN = 1;
+const TYPE_SHAPE_CONTROL = 2;
+
 const SHAPE_RANDOM = 0;
 const SHAPE_ROUND = 1;
 const SHAPE_SQUARE = 2;
@@ -7,6 +13,10 @@ function getRandomColor() {
     var red = Math.floor(Math.random() * 256);
     var green = Math.floor(Math.random() * 256);
     var blue = Math.floor(Math.random() * 256);
+
+    if (red == 0 && green == 0 && blue == 0) {
+        return getRandomColor();
+    }
 
     return [red, green, blue];
 }
