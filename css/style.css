@@ -1,5 +1,6 @@
 html, body, .container {
     height: 100%;
+    font-size: 12px;
 }
 
 canvas {
@@ -9,4 +10,16 @@ canvas {
 
 label {
     margin: 0;
+}
+
+#selected-grains-container {
+    height: 150px;
+    border: 1px solid black;
+    border-radius: 5px;
+    overflow: auto;
+}
+
+.phase-square {
+    min-width: 10px;
+    min-height: 10px;
 }

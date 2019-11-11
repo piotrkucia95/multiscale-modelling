@@ -23,55 +23,76 @@
                     <div class="form-group w-100">
                         <div class="row">
                             <div class="col">
-                                <label for="x-size-input" class="mr-1">Size X:</label> 
+                                <label for="x-size-input">Size X:</label> 
                                 <input type="number" min="300" id="x-size-input" class="w-100"/>
                             </div>
                             <div class="col">   
-                                <label for="y-size-input" class="mr-1">Size Y:</label> 
+                                <label for="y-size-input">Size Y:</label> 
                                 <input type="number" min="300" id="y-size-input" class="w-100"/>
                             </div>
                         </div>
                         <button type="button" id="size-button">Generate space</button>
 
                         <div class="neighborhood-type-container">
-                            <label for="neighborhood-type" class="mr-1">Neighborhood type:</label>
+                            <label for="neighborhood-type">Neighborhood type:</label>
                             <select class="form-control" id="neighborhood-type" disabled>
                                 <option value="0">Moore</option>
                                 <option value="1">Von Neumann</option>
                                 <option value="2">Grain shape control</option>
                               </select>
                         </div>
-                        <div class="radio">
-                            <label><input type="radio" name="optradio" value="manual" disabled>Add grains manually</label>
+                        <div class="probability-container d-none">
+                            <label for="probability">Probability:</label>
+                            <input min="1" max="100" type="number" id="probability" class="w-100"/>
                         </div>
-                        <div class="radio">
-                            <label><input type="radio" name="optradio" value="random" disabled>Add grains randomly</label>
+
+                        <div class="radio-container">
+                            <div class="radio">
+                                <label><input type="radio" name="optradio" value="manual" disabled>Add grains manually</label>
+                            </div>
+                            <div class="radio">
+                                <label><input type="radio" name="optradio" value="random" disabled>Add grains randomly</label>
+                            </div>
                         </div>
 
                         <div class="grains-number-container">
-                            <label for="grains-number" class="mr-1">Number of grains:</label>
+                            <label for="grains-number">Number of grains:</label>
                             <input type="number" id="grains-number" class="w-100" disabled/>
                         </div>
                         <button type="button" id="grains-button" disabled>Add grains</button>
 
-                        <div class="nucleons-number-container">
-                            <label for="nucleons-number" class="mr-1">Number of nucleons:</label>
-                            <input type="number" id="nucleons-number" class="w-100" disabled/>
+                        <div class="inclusions-number-container">
+                            <label for="inclusions-number">Number of inclusions:</label>
+                            <input type="number" id="inclusions-number" class="w-100" disabled/>
                         </div>
-                        <div class="nucleons-size-container">
-                            <label for="nucleons-size" class="mr-1">Size of nucleons:</label>
-                            <input type="number" id="nucleons-size" class="w-100" disabled/>
+                        <div class="inclusions-size-container">
+                            <label for="inclusions-size">Size of inclusions:</label>
+                            <input type="number" id="inclusions-size" class="w-100" disabled/>
                         </div>
-                        <div class="nucleons-shape-container">
-                            <label for="nucleons-shape" class="mr-1">Shape of nucleons:</label>
-                            <select class="form-control" id="nucleons-shape" disabled>
+                        <div class="inclusions-shape-container">
+                            <label for="inclusions-shape">Shape of inclusions:</label>
+                            <select class="form-control" id="inclusions-shape" disabled>
                                 <option value="0">random</option>
                                 <option value="1">&#9679 - circular</option>
                                 <option value="2">&#9632 - square</option>
                               </select>
                         </div>
-                        <button type="button" id="nucleons-button" disabled>Add nucleons</button>
+                        <button type="button" id="inclusions-button" disabled>Add inclusions</button>
+                        
+                        <label for="selected-grains-container">Selected phases:</label>
+                        <div id="selected-grains-container" class="w-100 d-none">
+                            <ul id="selected-grains" class="list-group"></ul>
+                        </div>
 
+                        <div class="structure-container d-none">
+                            <label for="structure">Structure:</label>
+                            <select class="form-control" id="structure">
+                                <option value="0">Substructure</option>
+                                <option value="1" disabled>Dual-phase</option>
+                            </select>
+                        </div>
+
+                        <button type="button" id="cut-grains-button" disabled>Cut selected grains</button>
                         
                         <button type="button" id="simulate-button" disabled>SIMULATION</button>
                     </div>
@@ -83,5 +104,6 @@
     <script src="../scripts/helper.js"></script>
     <script src="../scripts/canvasController.js"></script>  
     <script src="../scripts/eventHandlers.js"></script>
+    <script src="../scripts/grainGrowController.js"></script>  
 </body>
 </html>

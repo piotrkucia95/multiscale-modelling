@@ -1,10 +1,12 @@
-var stateArray = [];
-var colorArray = [];
-var isMicrostructureGenerated = false;
+var stateArray                  = [];
+var colorArray                  = [];
+var selectedGrains              = [];
+var isMicrostructureGenerated   = false;
 
 function initializeStateArray (width, height) {
     colorArray = [COLOR_WHITE, COLOR_BLACK];
     stateArray = [];
+    selectedGrains = [];
 
     for (var i=0; i < width; i++) {
         stateArray[i] = [];
@@ -95,71 +97,7 @@ function getGrainBoundaries () {
     return boundaries;
 }
 
-function checkMoore (stateForIteration, xIndex, yIndex) {
-    var neighborColors = [];
-    if (stateForIteration[xIndex][yIndex] == 0) {
-        for (var x=-1; x<=1; x++) {
-            for (var y=-1; y<=1; y++) {
-                if (xIndex+x < 0 || xIndex+x > canvasWidth-1 || yIndex+y < 0 || yIndex+y > canvasHeight-1) continue;
-                if (stateForIteration[xIndex+x][yIndex+y] != 0 && stateForIteration[xIndex+x][yIndex+y] != 1) {
-                    neighborColors.push(stateForIteration[xIndex+x][yIndex+y]);
-                }
-            }
-        }
-        if (neighborColors.length) {
-            var colorIndex = getMostFrequentColor(neighborColors);
-            stateArray[xIndex][yIndex] = colorIndex;         
-            drawPixel(xIndex, yIndex, colorArray[colorIndex][0], colorArray[colorIndex][1], colorArray[colorIndex][2], 255);
-        }
-    }
-}
-
-function checkVonNeumann (stateForIteration, xIndex, yIndex) {
-    var neighborColors = [];
-    if (stateForIteration[xIndex][yIndex] == 0) {
-        for (var x=-1; x<=1; x++) {
-            if (xIndex+x < 0 || xIndex+x > canvasWidth-1 || yIndex+x < 0 || yIndex+x > canvasHeight-1) continue;
-            if (stateForIteration[xIndex+x][yIndex] != 0 && stateForIteration[xIndex+x][yIndex] != 1) {
-                neighborColors.push(stateForIteration[xIndex+x][yIndex]);
-            }
-            if (stateForIteration[xIndex][yIndex+x] != 0 && stateForIteration[xIndex][yIndex+x] != 1) {
-                neighborColors.push(stateForIteration[xIndex][yIndex+x]);
-            }
-        }
-        if (neighborColors.length) {
-            var colorIndex = getMostFrequentColor(neighborColors);
-            stateArray[xIndex][yIndex] = colorIndex;         
-            drawPixel(xIndex, yIndex, colorArray[colorIndex][0], colorArray[colorIndex][1], colorArray[colorIndex][2], 255);
-        }
-    }
-}
-
-function checkShapeControl (stateForIteration, xIndex, yIndex) {
-
-    // TODO: complete grain shape control
-    
-    /*
-    var neighborColors = [];
-    if (stateForIteration[xIndex][yIndex] == 0) {
-        for (var x=-1; x<=1; x++) {
-            if (xIndex+x < 0 || xIndex+x > canvasWidth-1 || yIndex+x < 0 || yIndex+x > canvasHeight-1) continue;
-            if (stateForIteration[xIndex+x][yIndex] != 0 && stateForIteration[xIndex+x][yIndex] != 1) {
-                neighborColors.push(stateForIteration[xIndex+x][yIndex]);
-            }
-            if (stateForIteration[xIndex][yIndex+x] != 0 && stateForIteration[xIndex][yIndex+x] != 1) {
-                neighborColors.push(stateForIteration[xIndex][yIndex+x]);
-            }
-        }
-        if (neighborColors.length) {
-            var colorIndex = getMostFrequentColor(neighborColors);
-            stateArray[xIndex][yIndex] = colorIndex;         
-            drawPixel(xIndex, yIndex, colorArray[colorIndex][0], colorArray[colorIndex][1], colorArray[colorIndex][2], 255);
-        }
-    }
-    */
-}
-
-function simulateGrainGrowth (neighborhoodType) {
+function simulateGrainGrowth (neighborhoodType, probability) {
     var currentState = JSON.parse(JSON.stringify(stateArray));
 
     switch (neighborhoodType) {
@@ -178,7 +116,7 @@ function simulateGrainGrowth (neighborhoodType) {
 
     for (var i = 0; i < canvasWidth; i++) {
         for (var j = 0; j < canvasHeight; j++) {
-            checkNeighbors(currentState, i, j);
+            checkNeighbors(currentState, i, j, probability);
         }
     }
 
@@ -186,11 +124,22 @@ function simulateGrainGrowth (neighborhoodType) {
     return currentState;
 }
  
-function startSimulation (neighborhoodType) {
-    var currentState = simulateGrainGrowth(neighborhoodType);
-    if (JSON.stringify(currentState) != JSON.stringify(stateArray)) {
-        window.requestAnimationFrame(() => startSimulation(neighborhoodType));
+function startSimulation (neighborhoodType, probability) {
+    var currentState = simulateGrainGrowth(neighborhoodType, probability);
+    if (!checkIfFinished()) {
+        window.requestAnimationFrame(() => startSimulation(neighborhoodType, probability));
     } else {
         enableCanvasExport();
     }
+}
+
+function checkIfFinished () {
+    for (var i = 0; i < stateArray.length; i++) {
+        for (var j = 0; j < stateArray[0].length; j++) {
+            if (stateArray[i][j] == 0) {
+                return false;
+            }
+        }
+    }
+    return true;
 }

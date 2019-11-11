@@ -37,7 +37,7 @@ app.on('ready', function() {
 });
 
 ipcMain.on('canvas:create', function(e, width, height) {
-    var newWidth = parseInt(width) + INITIAL_WIDTH;
+    var newWidth = parseInt(width) + INITIAL_WIDTH + 100;
     var newHeight = parseInt(height) > INITIAL_HEIGHT - 100 ? parseInt(height) + 100 : INITIAL_HEIGHT;
     mainWindow.setSize(newWidth, newHeight);
 });

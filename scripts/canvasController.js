@@ -20,18 +20,8 @@ function createCanvas (width, height) {
     canvasWidth = width;
     canvasHeight = height;
 
-    $('.canvas-column').removeClass('d-none');
-    $('#x-size-input').attr('disabled', true);
-    $('#y-size-input').attr('disabled', true);
-    $('#size-button').attr('disabled', true);
-    $('input[name="optradio"]').prop('disabled', false);
-    $('#simulate-button').prop('disabled', false);
-    $('#neighborhood-type').prop('disabled', false);
-    $('#nucleons-number').prop('disabled', false);
-    $('#nucleons-size').prop('disabled', false);
-    $('#nucleons-shape').prop('disabled', false);
-    $('#nucleons-button').prop('disabled', false);
-
+    createUpdateInputs();
+    addCanvasOnclickHandler(); 
     ipcRenderer.send('canvas:create', width, height);
 }
 
@@ -49,6 +39,7 @@ function updateCanvas () {
 }
 
 function enableCanvasExport () {
+    simulationUpdateInputs();
     isMicrostructureGenerated = true;
     ipcRenderer.send('export:enable');
 }
