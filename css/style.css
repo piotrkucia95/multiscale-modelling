@@ -12,7 +12,7 @@ label {
     margin: 0;
 }
 
-#selected-grains-container {
+#selected-grains {
     height: 150px;
     border: 1px solid black;
     border-radius: 5px;

@@ -20,7 +20,7 @@ function createCanvas (width, height) {
     canvasWidth = width;
     canvasHeight = height;
 
-    createUpdateInputs();
+    updateInputsOnCanvasCreate();
     addCanvasOnclickHandler(); 
     ipcRenderer.send('canvas:create', width, height);
 }
@@ -39,7 +39,8 @@ function updateCanvas () {
 }
 
 function enableCanvasExport () {
-    simulationUpdateInputs();
+    updateInputsOnSimulationEnd();
+    selectedGrains = [];
     isMicrostructureGenerated = true;
     ipcRenderer.send('export:enable');
 }
@@ -60,12 +61,15 @@ ipcRenderer.on('canvas:import:txt', function (e, filePath) {
             drawPixel(parseInt(lineParams[0]), parseInt(lineParams[1]), parseInt(lineParams[3]), parseInt(lineParams[4]), parseInt(lineParams[5]), 255);
             var isColorInArray = false;
             for (var c = 0; c < colorArray.length; c++) {
+                if (!colorArray[c]) colorArray[c] = COLOR_WHITE;
                 if (colorArray[c][0] == lineParams[3] && colorArray[c][1] == lineParams[4] && colorArray[c][2] == lineParams[5]) {
                     isColorInArray = true;
                     break;
                 }
             }
-            if (!isColorInArray) colorArray.push([parseInt(lineParams[3]), parseInt(lineParams[4]), parseInt(lineParams[5])]);
+            if (!isColorInArray) {
+                colorArray[parseInt(lineParams[2])] = [parseInt(lineParams[3]), parseInt(lineParams[4]), parseInt(lineParams[5])];
+            }
         }
     });
 

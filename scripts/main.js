@@ -46,6 +46,7 @@ function addNucleon (xIndex, yIndex, size, shape, isNucleon) {
         for (var i = -leftIncrease; i <= righIncrease; i++) {
             for (var j = -leftIncrease; j <= righIncrease; j++) {
                 if (xIndex + i < canvasWidth && xIndex + i >= 0 && yIndex + j < canvasHeight && yIndex + j >= 0) {
+                    if (!isNucleon && stateArray[xIndex + i][yIndex + j] != 0) continue; 
                     stateArray[xIndex + i][yIndex + j] = colorArray.indexOf(pixelColor);
                     drawPixel(xIndex + i, yIndex + j, pixelColor[0], pixelColor[1], pixelColor[2], 255);
                 }
@@ -60,6 +61,10 @@ function spreadNucleonsRandomly (amount, size, shape, isNucleon) {
     for (var i=0; i < amount; i++) {
         var randomXIndex = Math.floor(Math.random() * canvasWidth);
         var randomYIndex = Math.floor(Math.random() * canvasHeight);
+        if (!isNucleon && stateArray[randomXIndex][randomYIndex] != 0) {
+            i--;
+            continue;
+        }
         addNucleon(randomXIndex, randomYIndex, size, shape, isNucleon);
     }
     updateCanvas();
