@@ -16,7 +16,6 @@ app.on('ready', function() {
     mainWindow = new BrowserWindow({
         width: INITIAL_WIDTH,
         height: INITIAL_HEIGHT,
-        resizable: false,
         webPreferences: {
             nodeIntegration: true
         }
@@ -50,6 +49,8 @@ ipcMain.on('export:enable', function(e, blob, states, ) {
 
 ipcMain.on('export:disable', function(e) {
     mainMenuTemplate[1].submenu[1].enabled = false;
+    const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
+    Menu.setApplicationMenu(mainMenu);
 });
 
 const mainMenuTemplate = [

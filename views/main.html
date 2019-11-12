@@ -11,17 +11,17 @@
     <script>if (window.module) module = window.module;</script>
 </head>
 <body>
-    <div class="container">
+    <div class="container p-2">
         <div class="row">
 
             <div class="col canvas-column d-none">
-                <div class="canvas-container w-100"></div>
+                <div class="canvas-container w-100 p-4"></div>
             </div>
 
             <div class="col">
                 <div class="inputs-container p-1">
-                    <div class="form-group w-100">
-                        <div class="row">
+                    <div class="form-group w-100 text-right">
+                        <div class="row pt-3 pb-2 text-left">
                             <div class="col">
                                 <label for="x-size-input">Size X:</label> 
                                 <input type="number" min="300" id="x-size-input" class="w-100"/>
@@ -31,9 +31,9 @@
                                 <input type="number" min="300" id="y-size-input" class="w-100"/>
                             </div>
                         </div>
-                        <button type="button" id="size-button">Generate space</button>
+                        <button type="button" id="size-button" class="ml-auto mr-auto">Generate space</button>
 
-                        <div class="neighborhood-type-container">
+                        <div class="neighborhood-type-container pt-2 text-left">
                             <label for="neighborhood-type">Neighborhood type:</label>
                             <select class="form-control" id="neighborhood-type" disabled>
                                 <option value="0">Moore</option>
@@ -41,12 +41,12 @@
                                 <option value="2">Grain shape control</option>
                               </select>
                         </div>
-                        <div class="probability-container d-none">
+                        <div class="probability-container d-none text-left pt-2">
                             <label for="probability">Probability:</label>
                             <input min="1" max="100" type="number" id="probability" class="w-100"/>
                         </div>
 
-                        <div class="radio-container">
+                        <div class="radio-container text-left pt-2 pb-2">
                             <div class="radio">
                                 <label><input type="radio" name="optradio" value="manual" disabled>Add grains manually</label>
                             </div>
@@ -55,21 +55,21 @@
                             </div>
                         </div>
 
-                        <div class="grains-number-container">
+                        <div class="grains-number-container text-left pt-2 pb-2">
                             <label for="grains-number">Number of grains:</label>
                             <input type="number" id="grains-number" class="w-100" disabled/>
                         </div>
                         <button type="button" id="grains-button" disabled>Add grains</button>
 
-                        <div class="inclusions-number-container">
+                        <div class="inclusions-number-container text-left pt-2">
                             <label for="inclusions-number">Number of inclusions:</label>
                             <input type="number" id="inclusions-number" class="w-100" disabled/>
                         </div>
-                        <div class="inclusions-size-container">
+                        <div class="inclusions-size-container text-left pt-2">
                             <label for="inclusions-size">Size of inclusions:</label>
                             <input type="number" id="inclusions-size" class="w-100" disabled/>
                         </div>
-                        <div class="inclusions-shape-container">
+                        <div class="inclusions-shape-container text-left pt-2 pb-2">
                             <label for="inclusions-shape">Shape of inclusions:</label>
                             <select class="form-control" id="inclusions-shape" disabled>
                                 <option value="0">random</option>
@@ -79,13 +79,12 @@
                         </div>
                         <button type="button" id="inclusions-button" disabled>Add inclusions</button>
                         
-
-                        <div id="selected-grains-container" class="w-100 d-none">
+                        <div id="selected-grains-container" class="w-100 d-none text-left pt-2">
                             <label for="selected-grains">Added phases:</label>
                             <ul id="selected-grains" class="list-group"></ul>
                         </div>
 
-                        <div class="structure-container d-none">
+                        <div class="structure-container d-none text-left pt-2 pb-2">
                             <label for="structure">Structure:</label>
                             <select class="form-control" id="structure">
                                 <option value="0">Substructure</option>
@@ -93,9 +92,27 @@
                             </select>
                         </div>
 
-                        <button type="button" id="select-grains-button" class="d-none" disabled>Select grains</button>
-                        
-                        <button type="button" id="simulate-button" disabled>SIMULATION</button>
+                        <div class="row pb-2">
+                            <div class="col">
+                                <button type="button" id="select-grains-button" class="d-none w-100">Select grains</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" id="clear-button" class="d-none w-100">Clear space</button>
+                            </div>
+                        </div>
+
+                        <div class="row pb-2">
+                            <div class="col">
+                                <button type="button" id="color-all-button" class="d-none w-100">Color all boundaries</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" id="color-selected-button" class="d-none w-100">Color selected boundaries</button>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="button" id="simulate-button" disabled>SIMULATION</button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -52,6 +52,7 @@ $('#simulate-button').on('click', () => {
 });
 
 $('#select-grains-button').on('click', (event) => {
+    if (!selectedGrains.length) updateInputsOnCanvasClear();
     for (var i = 0; i < stateArray.length; i++) {
         for (var j = 0; j < stateArray[0].length; j++) {
 
@@ -64,6 +65,54 @@ $('#select-grains-button').on('click', (event) => {
     }
     updateCanvas();
     updateInputsOnGrainsSelect();
+});
+
+$('#color-all-button').on('click', (event) => {
+    var grainBoundaries = getGrainBoundaries();
+    for (var i = 0; i < grainBoundaries.length; i++) {
+        addNucleon(grainBoundaries[i][0], grainBoundaries[i][1], 1, 1, true);
+    }
+    updateCanvas();
+    $('#color-all-button').attr('disabled', true);
+    $('#color-selected-button').attr('disabled', true);
+});
+
+$('#color-selected-button').on('click', (event) => {
+    var grainBoundaries = getGrainBoundaries();
+    for (var i = 0; i < grainBoundaries.length; i++) {
+        if (selectedGrains.includes(stateArray[grainBoundaries[i][0]][grainBoundaries[i][1]])) {
+            addNucleon(grainBoundaries[i][0], grainBoundaries[i][1], 1, 1, true);
+            for (var x = -1; x <= 1; x++) {
+                for (var y = -1; y <= 1; y++) {
+                    var xIndex = grainBoundaries[i][0];
+                    var yIndex = grainBoundaries[i][1];
+                    if (xIndex+x < 0 || xIndex+x > canvasWidth-1 || yIndex+y < 0 || yIndex+y > canvasHeight-1) continue;
+                    var arr = [(xIndex + x), (yIndex + y)];
+
+                    for (var gb of grainBoundaries) {
+                        if (gb[0] == arr[0] && gb[1] == arr[1]) {
+                            addNucleon(arr[0], arr[1], 1, 1, true);
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+    updateCanvas();
+});
+
+$('#clear-button').on('click', (event) => {
+    for (var i = 0; i < stateArray.length; i++) {
+        for (var j = 0; j < stateArray[i].length; j++) {
+            stateArray[i][j] = 0;
+            drawPixel(i, j, 0, 0, 0, 0);
+        }   
+    }
+    updateCanvas();
+    isMicrostructureGenerated = false;
+    ipcRenderer.send('export:disable');
+    updateInputsOnCanvasClear();
 });
 
 function addCanvasOnclickHandler() {
@@ -87,7 +136,6 @@ function addCanvasOnclickHandler() {
                 var phaseSqureElement = '<div class="phase-square float-left m-1" style="background-color: rgb(' + colorArray[phase][0] + ', ' + colorArray[phase][1] + ', '+ colorArray[phase][2] + ')"></div>'
                 $('#selected-grains').append('<li class="list-group-item"> ' + phaseSqureElement + 'phase id:'  + phase + '</li>');
                 $("#selected-grains").scrollTop($('#selected-grains-container')[0].scrollHeight);
-                $('#select-grains-button').prop('disabled', false);
             }
         }
     });
@@ -118,8 +166,15 @@ function updateInputsOnSimulationEnd() {
     $('#grains-button').addClass('d-none');
     $('#selected-grains-container').removeClass('d-none');
     $('.structure-container').removeClass('d-none');
-    $('#select-grains-button').removeClass('d-none');
+    $('#select-grains-button').removeClass('d-none').prop('disabled', false);
     $('#selected-grains').empty();
+    $('#color-all-button').removeClass('d-none');
+    $('#color-selected-button').removeClass('d-none');
+    $('#clear-button').removeClass('d-none');
+    $('.inclusions-number-container').removeClass('d-none');
+    $('.inclusions-size-container').removeClass('d-none');
+    $('.inclusions-shape-container').removeClass('d-none');
+    $('#inclusions-button').removeClass('d-none');
 }
 
 function updateInputsOnGrainsSelect() {
@@ -129,6 +184,30 @@ function updateInputsOnGrainsSelect() {
     if ($('#neighborhood-type').val() == TYPE_SHAPE_CONTROL) $('.probability-container').removeClass('d-none');
     $('.grains-number-container').removeClass('d-none');
     $('#grains-button').removeClass('d-none');
-    $('#select-grains-button').addClass('d-none').attr('disabled', true);
+    $('#select-grains-button').attr('disabled', true);
     $('#simulate-button').removeClass('d-none');
+    $('.inclusions-number-container').addClass('d-none');
+    $('.inclusions-size-container').addClass('d-none');
+    $('.inclusions-shape-container').addClass('d-none');
+    $('#inclusions-button').addClass('d-none');
+}
+
+function updateInputsOnCanvasClear() {
+    $('.radio-container').removeClass('d-none');
+    $('#simulate-button').removeClass('d-none');
+    $('.neighborhood-type-container').removeClass('d-none');
+    if ($('#neighborhood-type').val() == TYPE_SHAPE_CONTROL) $('.probability-container').removeClass('d-none');
+    $('.grains-number-container').removeClass('d-none');
+    $('#grains-button').removeClass('d-none');
+    $('.structure-container').addClass('d-none');
+    $('#selected-grains-container').addClass('d-none');
+    $('#select-grains-button').addClass('d-none').prop('disabled', false);;
+    $('#selected-grains').empty();
+    $('#color-all-button').addClass('d-none').prop('disabled', false);
+    $('#color-selected-button').addClass('d-none').prop('disabled', false);
+    $('#clear-button').addClass('d-none');
+    $('.inclusions-number-container').removeClass('d-none');
+    $('.inclusions-size-container').removeClass('d-none');
+    $('.inclusions-shape-container').removeClass('d-none');
+    $('#inclusions-button').removeClass('d-none');
 }
