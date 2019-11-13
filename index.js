@@ -8,7 +8,7 @@ const INITIAL_WIDTH = 400;
 const INITIAL_HEIGHT = 600;
 
 // SET ENV
-// process.env.NODE_ENV = 'production';
+//process.env.NODE_ENV = 'production';
 
 let mainWindow;
 

@@ -1,10 +1,19 @@
 var isCanvasDrawable = false;
 
 $('#size-button').on('click', (event) => {
+
     var width = $('#x-size-input').val();
     var height = $('#y-size-input').val();
-    createCanvas(width, height);
-    initializeStateArray(width, height);
+
+    if (!width || !height) {
+        $('#size-error').text('Enter X Size and Y Size of the space.');
+    } else if (width < 100 || height < 100) {
+        $('#size-error').text('Entered sizes are too small. Minimum size is 100px.');
+    } else {
+        $('#size-error').text('');
+        createCanvas(width, height);
+        initializeStateArray(width, height);
+    }
 });
 
 $('#neighborhood-type').on('change', (event) => {
@@ -29,13 +38,36 @@ $('input[name="optradio"]').on('click', (event) => {
 
 $('#grains-button').on('click', ()=> {
     var numberOfGrains = $('#grains-number').val();
-    spreadNucleonsRandomly(numberOfGrains, 1, SHAPE_SQUARE, false);
+    if (!numberOfGrains) {
+        $('#grains-error').text('Provide a number of grains.');
+    } else if (numberOfGrains < 1 || numberOfGrains > canvasWidth*canvasHeight) {
+        $('#grains-error').text('Number of grains must be higher than 0 and lower than space size.');
+    } else {
+        $('#grains-error').text('');
+        spreadNucleonsRandomly(numberOfGrains, 1, SHAPE_SQUARE, false);
+    }
 });
 
 $('#inclusions-button').on('click', ()=> {
     var numberOfNucleons = $('#inclusions-number').val();
     var sizeOfNucleons = $('#inclusions-size').val();
     var shapeOfNucleons = $('#inclusions-shape').val();
+
+    if (!numberOfNucleons) {
+        $('#inclusions-error').text('Provide a number of inclusions.');
+        return;
+    } else if (numberOfNucleons < 1 || numberOfNucleons > canvasWidth*canvasHeight) {
+        $('#inclusions-error').text('Number of inclusions must be higher than 0 and lower than space size.');
+        return;
+    }
+
+    if (!sizeOfNucleons) {
+        $('#inclusions-error').text('Provide the size of inclusions.');
+        return;
+    } else if (sizeOfNucleons < 1) {
+        $('#inclusions-error').text('The size of inclusions must be higher than 0.');
+        return;
+    }
 
     if (isMicrostructureGenerated) {
         spreadNucleonsOnGrainBoundaries(numberOfNucleons, sizeOfNucleons, shapeOfNucleons, true);
@@ -47,8 +79,15 @@ $('#inclusions-button').on('click', ()=> {
 $('#simulate-button').on('click', () => {
     var neighborhoodType = $('#neighborhood-type').val();
     var probability = $('#probability').val();
-    startSimulation( parseInt(neighborhoodType), parseInt(probability) );
-    isCanvasDrawable = false;
+    if (!probability && neighborhoodType == TYPE_SHAPE_CONTROL) {
+        $('#probability-error').text('Enter probability.');
+    } else if (neighborhoodType == TYPE_SHAPE_CONTROL && (probability < 1 || probability > 100)) {
+        $('#probability-error').text('Probabilty must be a value between 1% and 100%.');
+    } else {
+        $('#probability-error').text('');
+        startSimulation( parseInt(neighborhoodType), parseInt(probability) );
+        isCanvasDrawable = false;
+    }
 });
 
 $('#select-grains-button').on('click', (event) => {
