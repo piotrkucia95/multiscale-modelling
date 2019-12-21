@@ -36,14 +36,23 @@ $('input[name="optradio"]').on('click', (event) => {
     }
 });
 
-$('#grains-button').on('click', ()=> {
+$('#grains-button').on('click', () => {
     var numberOfGrains = $('#grains-number').val();
+    var numberOfStates = $('#states-number').val();
+    if (!numberOfStates || numberOfStates < 1) {
+        $('#states-error').text('Provide a valid number of states.');
+    } else {
+        if (colorArray.length <= 2) getRandomStateColors(numberOfStates);
+        $('#states-error').text('');
+    }
+
     if (!numberOfGrains) {
         $('#grains-error').text('Provide a number of grains.');
     } else if (numberOfGrains < 1 || numberOfGrains > canvasWidth*canvasHeight) {
         $('#grains-error').text('Number of grains must be higher than 0 and lower than space size.');
     } else {
         $('#grains-error').text('');
+        $('#states-number').attr('disabled', true);
         spreadNucleonsRandomly(numberOfGrains, 1, SHAPE_SQUARE, false);
     }
 });
@@ -157,8 +166,17 @@ $('#clear-button').on('click', (event) => {
 function addCanvasOnclickHandler() {
     $('#main-canvas').on('click', (event) => {
         if (isCanvasDrawable) {
-            addNucleon(event.offsetX, event.offsetY, 1, SHAPE_SQUARE, false);
-            updateCanvas();
+            var numberOfStates = $('#states-number').val();
+            if (!numberOfStates || numberOfStates < 1) {
+                $('#states-error').text('Provide a valid number of states before adding nucleons.');
+                return;
+            } else {
+                if (colorArray.length <= 2) getRandomStateColors(numberOfStates);
+                addNucleon(event.offsetX, event.offsetY, 1, SHAPE_SQUARE, false);
+                updateCanvas();
+                $('#states-number').attr('disabled', true);
+                $('#states-error').text('');
+            }
         } else if (isMicrostructureGenerated) {
             var phase = stateArray[event.offsetX][event.offsetY];
             if (phase == 1) return;
@@ -188,12 +206,14 @@ function updateInputsOnCanvasCreate() {
     $('#y-size-input').val(canvasHeight);
     $('#size-button').addClass('d-none');
     $('input[name="optradio"]').prop('disabled', false);
+    $('#states-number').prop('disabled', false);
     $('#simulate-button').prop('disabled', false);
     $('#neighborhood-type').prop('disabled', false);
     $('#inclusions-number').prop('disabled', false);
     $('#inclusions-size').prop('disabled', false);
     $('#inclusions-shape').prop('disabled', false);
     $('#inclusions-button').prop('disabled', false);
+    $('#nav-tab').removeClass('d-none');
 }
 
 function updateInputsOnSimulationEnd() {
@@ -201,6 +221,7 @@ function updateInputsOnSimulationEnd() {
     $('#simulate-button').addClass('d-none');
     $('.neighborhood-type-container').addClass('d-none');
     $('.probability-container').addClass('d-none');
+    $('.states-number-container').addClass('d-none');
     $('.grains-number-container').addClass('d-none');
     $('#grains-button').addClass('d-none');
     $('#selected-grains-container').removeClass('d-none');
@@ -214,6 +235,7 @@ function updateInputsOnSimulationEnd() {
     $('.inclusions-size-container').removeClass('d-none');
     $('.inclusions-shape-container').removeClass('d-none');
     $('#inclusions-button').removeClass('d-none');
+    $('#nav-mc-tab').removeClass('disabled');
 }
 
 function updateInputsOnGrainsSelect() {
@@ -221,6 +243,7 @@ function updateInputsOnGrainsSelect() {
     $('.radio-container').removeClass('d-none');
     $('.neighborhood-type-container').removeClass('d-none');
     if ($('#neighborhood-type').val() == TYPE_SHAPE_CONTROL) $('.probability-container').removeClass('d-none');
+    $('.states-number-container').removeClass('d-none');
     $('.grains-number-container').removeClass('d-none');
     $('#grains-button').removeClass('d-none');
     $('#select-grains-button').attr('disabled', true);
@@ -236,6 +259,8 @@ function updateInputsOnCanvasClear() {
     $('#simulate-button').removeClass('d-none');
     $('.neighborhood-type-container').removeClass('d-none');
     if ($('#neighborhood-type').val() == TYPE_SHAPE_CONTROL) $('.probability-container').removeClass('d-none');
+    $('.states-number-container').removeClass('d-none');
+    $('#states-number').prop('disabled', false);
     $('.grains-number-container').removeClass('d-none');
     $('#grains-button').removeClass('d-none');
     $('.structure-container').addClass('d-none');

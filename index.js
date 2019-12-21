@@ -5,7 +5,7 @@ const path          = require('path');
 const {app, BrowserWindow, Menu, ipcMain, dialog} = electron;
 
 const INITIAL_WIDTH = 400;
-const INITIAL_HEIGHT = 600;
+const INITIAL_HEIGHT = 620;
 
 // SET ENV
 //process.env.NODE_ENV = 'production';

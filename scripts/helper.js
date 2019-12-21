@@ -14,9 +14,7 @@ function getRandomColor() {
     var green = Math.floor(Math.random() * 256);
     var blue = Math.floor(Math.random() * 256);
 
-    if (red == 0 && green == 0 && blue == 0) {
-        return getRandomColor();
-    }
+    if ((red == 0 && green == 0 && blue == 0) || (red == 1 && green == 1 && blue == 1)) return getRandomColor();
 
     return [red, green, blue];
 }

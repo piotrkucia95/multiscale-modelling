@@ -2,11 +2,13 @@ var stateArray                  = [];
 var colorArray                  = [];
 var selectedGrains              = [];
 var isMicrostructureGenerated   = false;
+var nucleonsNumber               = 0;
 
 function initializeStateArray (width, height) {
     colorArray = [COLOR_WHITE, COLOR_BLACK];
     stateArray = [];
     selectedGrains = [];
+    nucleonsNumber = 0;
 
     for (var i=0; i < width; i++) {
         stateArray[i] = [];
@@ -16,14 +18,29 @@ function initializeStateArray (width, height) {
     }
 }
 
+function getRandomStateColors (numberOfStates) {
+    for (var i = 0; i < numberOfStates; i++) {
+        colorArray.push(getRandomColor());
+    }
+}
+
+function getNextStateColor () {
+    var currentNucleon = 1;
+    for (var i = 0; i < nucleonsNumber; i++) {
+        if (currentNucleon >= colorArray.length - 1) currentNucleon = 1;
+        currentNucleon++;
+    }
+    return colorArray[currentNucleon];
+}
+
 function addNucleon (xIndex, yIndex, size, shape, isNucleon) {
     if (isNucleon) {
         var pixelColor = COLOR_BLACK;
     } else {
-        var pixelColor = getRandomColor();
+        nucleonsNumber++;
+        var pixelColor = getNextStateColor();
     }
-    
-    colorArray.push(pixelColor);
+
     var leftIncrease = Math.floor(size / 2);
     var righIncrease = size % 2 == 0 ? leftIncrease-1 : leftIncrease;
     if (shape == SHAPE_RANDOM) shape = Math.round((Math.random() * 1) + 1);
