@@ -63,6 +63,7 @@ function getMooreNeighbors(stateForIteration, xIndex, yIndex) {
     var neighborColors = [];
     for (var x=-1; x<=1; x++) {
         for (var y=-1; y<=1; y++) {
+            if (x == 0 && y == 0) continue;
             if (xIndex+x < 0 || xIndex+x > canvasWidth-1 || yIndex+y < 0 || yIndex+y > canvasHeight-1) continue;
             if (stateForIteration[xIndex+x][yIndex+y] != 0 && stateForIteration[xIndex+x][yIndex+y] != 1 && !selectedGrains.includes(stateForIteration[xIndex+x][yIndex+y])) {
                 neighborColors.push(stateForIteration[xIndex+x][yIndex+y]);
@@ -75,6 +76,7 @@ function getMooreNeighbors(stateForIteration, xIndex, yIndex) {
 function getVonNeumannNeighbors(stateForIteration, xIndex, yIndex) {
     var neighborColors = [];
     for (var x=-1; x<=1; x++) {
+        if (x == 0) continue;
         if (xIndex+x < 0 || xIndex+x > canvasWidth-1) continue;
         if (stateForIteration[xIndex+x][yIndex] != 0 && stateForIteration[xIndex+x][yIndex] != 1 && !selectedGrains.includes(stateForIteration[xIndex+x][yIndex])) {
             neighborColors.push(stateForIteration[xIndex+x][yIndex]);

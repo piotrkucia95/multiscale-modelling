@@ -143,11 +143,10 @@ function simulateGrainGrowth (neighborhoodType, probability) {
     }
 
     updateCanvas();
-    return currentState;
 }
  
 function startSimulation (neighborhoodType, probability) {
-    var currentState = simulateGrainGrowth(neighborhoodType, probability);
+    simulateGrainGrowth(neighborhoodType, probability);
     if (!checkIfFinished()) {
         window.requestAnimationFrame(() => startSimulation(neighborhoodType, probability));
     } else {
@@ -164,4 +163,26 @@ function checkIfFinished () {
         }
     }
     return true;
+}
+
+function simulateMonteCarlo () {
+    var currentState = JSON.parse(JSON.stringify(stateArray));
+    for (var i = 0; i < canvasWidth; i++) {
+        for (var j = 0; j < canvasHeight; j++) {
+            calculateMonteCarlo(currentState, i, j);
+        }
+    }
+    updateCanvas();
+}
+
+var monteCarloCalls = 0;
+function startMonteCarlo (iterations) {
+    simulateMonteCarlo();
+    monteCarloCalls++;
+    if (monteCarloCalls <= iterations) {
+        console.log(monteCarloCalls);
+        window.requestAnimationFrame(() => startMonteCarlo(iterations));
+    } else {
+        monteCarloCalls = 0;
+    }
 }
