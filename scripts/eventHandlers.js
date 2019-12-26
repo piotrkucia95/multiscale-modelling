@@ -251,3 +251,29 @@ $('#nav-ca-tab').on('click', () => {
     $("#grains-selection-menu-1").append($("#grains-selection-menu").remove());
     addSelectionOptionOnlickHandler();
 });
+
+$('#energy-button').on('click', (event) => {
+    var grainEnergy = $('#grain-energy-input').val();
+    var boundaryEnergy = $('#boundary-energy-input').val();
+
+    if (!grainEnergy && !boundaryEnergy) {
+        $('#energy-error').text('Enter grain and boundary energy values.');
+    } else if (grainEnergy < 0 || boundaryEnergy < 0) {
+        $('#energy-error').text('Enter valid grain and boundary energy values.');
+    } else if (!grainEnergy) {
+        $('#energy-error').text('Enter grain energy value.');
+    } else if (!boundaryEnergy) {
+        $('#energy-error').text('Enter boundary energy value.');
+    } else {
+        drawEnergy(grainEnergy, boundaryEnergy);
+        $('#energy-error').text('');
+        $('#energy-button').addClass('d-none');
+        $('#open-main-view').removeClass('d-none');
+    }
+});
+
+$('#open-main-view').on('click', () => {
+    drawStates();
+    $('#open-main-view').addClass('d-none');
+    $('#energy-button').removeClass('d-none');
+});

@@ -165,11 +165,30 @@
                         </div>
 
                         <div id="grains-selection-menu-2"></div>
-                        
-                        <div class="text-center">
-                            <button type="button" id="mc-simulate-button">START</button>
+
+                        <div class="row text-left">
+                            <div class="col">
+                                <label for="grain-energy-input">Grain energy:</label> 
+                                <input type="number" min="0" max="10" id="grain-energy-input" class="w-100"/>
+                            </div>
+                            <div class="col">   
+                                <label for="boundary-energy-input">Boundary energy:</label> 
+                                <input type="number" min="0" max="10" id="boundary-energy-input" class="w-100"/>
+                            </div>
                         </div>
+                        <div class="text-left text-danger pb-2" id="energy-error"></div>
                         
+
+                        <div class="row text-center">
+                            <div class="col">
+                                <button type="button" id="mc-simulate-button">Start Monte Carlo</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" id="energy-button">Distribute energy</button>
+                                <button type="button" id="open-main-view" class="d-none">Back to main view</button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
