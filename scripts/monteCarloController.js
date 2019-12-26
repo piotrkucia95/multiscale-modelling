@@ -1,8 +1,9 @@
 var boundaryEnergy = 1;
 
 function calculateMonteCarlo(stateForIteration, xIndex, yIndex) {
+    if (stateForIteration[xIndex][yIndex] == 1 || selectedGrains.includes(stateForIteration[xIndex][yIndex])) return;
     var neighbours = getMooreNeighbors(stateForIteration, xIndex, yIndex);
-    var randomCellValue = Math.floor(Math.random() * (colorArray.length-2)) + 2;
+    var randomCellValue = Math.floor(Math.random() * (colorArray.length-3)) + 3;
     
     var energyBefore = countEnergy(neighbours, stateForIteration[xIndex][yIndex]);
     var energyAfter = countEnergy(neighbours, randomCellValue);

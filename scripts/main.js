@@ -5,7 +5,7 @@ var isMicrostructureGenerated   = false;
 var nucleonsNumber               = 0;
 
 function initializeStateArray (width, height) {
-    colorArray = [COLOR_WHITE, COLOR_BLACK];
+    colorArray = [COLOR_WHITE, COLOR_BLACK, COLOR_SELECTED];
     stateArray = [];
     selectedGrains = [];
     nucleonsNumber = 0;
@@ -25,9 +25,9 @@ function getRandomStateColors (numberOfStates) {
 }
 
 function getNextStateColor () {
-    var currentNucleon = 1;
+    var currentNucleon = 2;
     for (var i = 0; i < nucleonsNumber; i++) {
-        if (currentNucleon >= colorArray.length - 1) currentNucleon = 1;
+        if (currentNucleon >= colorArray.length - 1) currentNucleon = 2;
         currentNucleon++;
     }
     return colorArray[currentNucleon];
@@ -180,9 +180,24 @@ function startMonteCarlo (iterations) {
     simulateMonteCarlo();
     monteCarloCalls++;
     if (monteCarloCalls <= iterations) {
-        console.log(monteCarloCalls);
         window.requestAnimationFrame(() => startMonteCarlo(iterations));
     } else {
         monteCarloCalls = 0;
     }
+}
+
+function checkIfSameGrainNeighbours(colorIndex, xIndex, yIndex) {
+    if (stateArray[xIndex][yIndex] == 1 || stateArray[xIndex][yIndex] == 2) return;
+
+    stateArray[xIndex][yIndex] = 2;
+    drawPixel(xIndex, yIndex, COLOR_SELECTED[0], COLOR_SELECTED[1], COLOR_SELECTED[2], 255);
+
+    if ((xIndex - 1 >= 0) && (stateArray[xIndex-1][yIndex] == colorIndex)) 
+        checkIfSameGrainNeighbours(colorIndex, xIndex-1, yIndex);
+    if (xIndex+1 < stateArray.length && stateArray[xIndex+1][yIndex] == colorIndex) 
+        checkIfSameGrainNeighbours(colorIndex, xIndex+1, yIndex);
+    if (yIndex-1 >= 0 && stateArray[xIndex][yIndex-1] == colorIndex) 
+        checkIfSameGrainNeighbours(colorIndex, xIndex, yIndex-1);
+    if (yIndex-1 < stateArray[0].length && stateArray[xIndex][yIndex+1] == colorIndex) 
+        checkIfSameGrainNeighbours(colorIndex, xIndex, yIndex+1);
 }

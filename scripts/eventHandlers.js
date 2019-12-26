@@ -42,7 +42,7 @@ $('#grains-button').on('click', () => {
     if (!numberOfStates || numberOfStates < 1) {
         $('#states-error').text('Provide a valid number of states.');
     } else {
-        if (colorArray.length <= 2) getRandomStateColors(numberOfStates);
+        if (colorArray.length <= 3) getRandomStateColors(numberOfStates);
         $('#states-error').text('');
     }
 
@@ -100,11 +100,19 @@ $('#ca-simulate-button').on('click', () => {
 });
 
 $('#select-grains-button').on('click', (event) => {
+    var isSelectionOfAll = $('input[name="selection-opt"]:checked').val() == 'all-grains';
+
     if (!selectedGrains.length) updateInputsOnCanvasClear();
+    var isDualPhase = $('#structure').val() == 0;
     for (var i = 0; i < stateArray.length; i++) {
         for (var j = 0; j < stateArray[0].length; j++) {
-
-            if (!selectedGrains.includes(stateArray[i][j]) && stateArray[i][j] != 1) {
+            if (isSelectionOfAll && !selectedGrains.includes(stateArray[i][j]) && stateArray[i][j] != 1) {
+                stateArray[i][j] = 0;
+                drawPixel(i, j, COLOR_WHITE[0], COLOR_WHITE[1], COLOR_WHITE[2], 255);
+            } else if (isSelectionOfAll && isDualPhase){
+                stateArray[i][j] = 2;
+                drawPixel(i, j, COLOR_SELECTED[0], COLOR_SELECTED[1], COLOR_SELECTED[2], 255);
+            } else if (!isSelectionOfAll && stateArray[i][j] != 2) {
                 stateArray[i][j] = 0;
                 drawPixel(i, j, COLOR_WHITE[0], COLOR_WHITE[1], COLOR_WHITE[2], 255);
             }
@@ -113,6 +121,7 @@ $('#select-grains-button').on('click', (event) => {
     }
     updateCanvas();
     updateInputsOnGrainsSelect();
+    selectedGrains.length = 0;
 });
 
 $('#color-all-button').on('click', (event) => {
@@ -171,28 +180,39 @@ function addCanvasOnclickHandler() {
                 $('#states-error').text('Provide a valid number of states before adding nucleons.');
                 return;
             } else {
-                if (colorArray.length <= 2) getRandomStateColors(numberOfStates);
+                if (colorArray.length <= 3) getRandomStateColors(numberOfStates);
                 addNucleon(event.offsetX, event.offsetY, 1, SHAPE_SQUARE, false);
                 updateCanvas();
                 $('#states-number').attr('disabled', true);
                 $('#states-error').text('');
             }
         } else if (isMicrostructureGenerated) {
+            var isSelectionOfAll = $('input[name="selection-opt"]:checked').val() == 'all-grains';
             var phase = stateArray[event.offsetX][event.offsetY];
             if (phase == 1) return;
-            var hasPhase = false;
-            for (var p of selectedGrains) {
-                if (p == phase) {
-                    hasPhase = true;
-                }
-            }
 
-            if (!hasPhase) {
-                var element = $('#selected-grains');
-                selectedGrains.push(phase);
-                var phaseSqureElement = '<div class="phase-square float-left m-1" style="background-color: rgb(' + colorArray[phase][0] + ', ' + colorArray[phase][1] + ', '+ colorArray[phase][2] + ')"></div>'
-                $('#selected-grains').append('<li class="list-group-item"> ' + phaseSqureElement + 'phase id:'  + phase + '</li>');
-                $("#selected-grains").scrollTop($('#selected-grains-container')[0].scrollHeight);
+            if (isSelectionOfAll) {
+                var hasPhase = false;
+                for (var p of selectedGrains) {
+                    if (p == phase) {
+                        hasPhase = true;
+                    }
+                }
+    
+                if (!hasPhase) {
+                    var element = $('#selected-grains');
+                    selectedGrains.push(phase);
+                    var phaseSqureElement = '<div class="phase-square float-left m-1" style="background-color: rgb(' + colorArray[phase][0] + ', ' + colorArray[phase][1] + ', '+ colorArray[phase][2] + ')"></div>'
+                    $('#selected-grains').append('<li class="list-group-item"> ' + phaseSqureElement + 'phase id:'  + phase + '</li>');
+                    $("#selected-grains").scrollTop($('#selected-grains-container')[0].scrollHeight);
+                }
+
+            } else {
+
+                checkIfSameGrainNeighbours(stateArray[event.offsetX][event.offsetY], event.offsetX, event.offsetY);
+                selectedGrains.push(2);
+                updateCanvas();
+
             }
         }
     });
@@ -206,4 +226,28 @@ $('#mc-simulate-button').on('click', () => {
         $('#iterations-error').text('');
         startMonteCarlo( parseInt(numberOfIterations) );
     }
+});
+
+function addSelectionOptionOnlickHandler() {
+    $('input[name="selection-opt"]').on('click', (event) => {
+        if(event.target.value === 'all-grains') {
+            $('#selected-grains-container').removeClass('d-none');
+            $('#structure option[value="1"]').prop('disabled', false);
+        } else {
+            $('#selected-grains-container').addClass('d-none');
+            $('#structure').val('0').change();
+            $('#structure option[value="1"]').attr('disabled', true);
+        }
+    });
+}
+addSelectionOptionOnlickHandler();
+
+$('#nav-mc-tab').on('click', () => {
+    $("#grains-selection-menu-2").append($("#grains-selection-menu").remove());
+    addSelectionOptionOnlickHandler();
+});
+
+$('#nav-ca-tab').on('click', () => {
+    $("#grains-selection-menu-1").append($("#grains-selection-menu").remove());
+    addSelectionOptionOnlickHandler();
 });

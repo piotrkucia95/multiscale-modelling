@@ -24,7 +24,7 @@ function updateInputsOnSimulationEnd() {
     $('.states-number-container').addClass('d-none');
     $('.grains-number-container').addClass('d-none');
     $('#grains-button').addClass('d-none');
-    $('#selected-grains-container').removeClass('d-none');
+    $('#selection-radio-container').removeClass('d-none');
     $('.structure-container').removeClass('d-none');
     $('#select-grains-button').removeClass('d-none').prop('disabled', false);
     $('#selected-grains').empty();
@@ -39,6 +39,7 @@ function updateInputsOnSimulationEnd() {
 }
 
 function updateInputsOnGrainsSelect() {
+    $('#selection-radio-container').addClass('d-none');
     $('#selected-grains-container').addClass('d-none');
     $('.radio-container').removeClass('d-none');
     $('.neighborhood-type-container').removeClass('d-none');
@@ -64,6 +65,7 @@ function updateInputsOnCanvasClear() {
     $('.grains-number-container').removeClass('d-none');
     $('#grains-button').removeClass('d-none');
     $('.structure-container').addClass('d-none');
+    $('#selection-radio-container').addClass('d-none');
     $('#selected-grains-container').addClass('d-none');
     $('#select-grains-button').addClass('d-none').prop('disabled', false);;
     $('#selected-grains').empty();

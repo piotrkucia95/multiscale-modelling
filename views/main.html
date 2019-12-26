@@ -105,17 +105,30 @@
                                 <div class="text-left text-danger pb-t" id="inclusions-error"></div>
                                 <button type="button" id="inclusions-button" disabled>Add inclusions</button>
                                 
-                                <div id="selected-grains-container" class="w-100 d-none text-left pt-2">
-                                    <label for="selected-grains">Added phases:</label>
-                                    <ul id="selected-grains" class="list-group"></ul>
-                                </div>
-        
-                                <div class="structure-container d-none text-left pt-2 pb-2">
-                                    <label for="structure">Structure:</label>
-                                    <select class="form-control" id="structure">
-                                        <option value="0">Substructure</option>
-                                        <option value="1" disabled>Dual-phase</option>
-                                    </select>
+                                <div id="grains-selection-menu-1">
+                                    <div id="grains-selection-menu">
+                                        <div id="selection-radio-container" class="radio-container text-left d-none pt-2">
+                                            <div class="radio">
+                                                <label><input type="radio" name="selection-opt" value="single-grains" checked>Select single grains</label>
+                                            </div>
+                                            <div class="radio">
+                                                <label><input type="radio" name="selection-opt" value="all-grains"/>Select all grains of state</label>
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="selected-grains-container" class="w-100 d-none text-left pt-2">
+                                            <label for="selected-grains">Added phases:</label>
+                                            <ul id="selected-grains" class="list-group"></ul>
+                                        </div>
+                
+                                        <div class="structure-container d-none text-left pt-2 pb-2">
+                                            <label for="structure">Structure:</label>
+                                            <select class="form-control" id="structure">
+                                                <option value="0">Dual-phase</option>
+                                                <option value="1" disabled>Substructure</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
         
                                 <div class="row pb-2">
@@ -150,6 +163,8 @@
                             <input type="number" id="iterations-number" class="w-100"/>
                             <div class="text-left text-danger pb-1" id="iterations-error"></div>
                         </div>
+
+                        <div id="grains-selection-menu-2"></div>
                         
                         <div class="text-center">
                             <button type="button" id="mc-simulate-button">START</button>

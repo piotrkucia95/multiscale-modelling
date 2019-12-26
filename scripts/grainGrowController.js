@@ -65,7 +65,7 @@ function getMooreNeighbors(stateForIteration, xIndex, yIndex) {
         for (var y=-1; y<=1; y++) {
             if (x == 0 && y == 0) continue;
             if (xIndex+x < 0 || xIndex+x > canvasWidth-1 || yIndex+y < 0 || yIndex+y > canvasHeight-1) continue;
-            if (stateForIteration[xIndex+x][yIndex+y] != 0 && stateForIteration[xIndex+x][yIndex+y] != 1 && !selectedGrains.includes(stateForIteration[xIndex+x][yIndex+y])) {
+            if (stateForIteration[xIndex+x][yIndex+y] != 0 && stateForIteration[xIndex+x][yIndex+y] != 1 && stateForIteration[xIndex+x][yIndex+y] != 2 && !selectedGrains.includes(stateForIteration[xIndex+x][yIndex+y])) {
                 neighborColors.push(stateForIteration[xIndex+x][yIndex+y]);
             }
         }
@@ -78,11 +78,11 @@ function getVonNeumannNeighbors(stateForIteration, xIndex, yIndex) {
     for (var x=-1; x<=1; x++) {
         if (x == 0) continue;
         if (xIndex+x < 0 || xIndex+x > canvasWidth-1) continue;
-        if (stateForIteration[xIndex+x][yIndex] != 0 && stateForIteration[xIndex+x][yIndex] != 1 && !selectedGrains.includes(stateForIteration[xIndex+x][yIndex])) {
+        if (stateForIteration[xIndex+x][yIndex] != 0 && stateForIteration[xIndex+x][yIndex] != 1 && stateForIteration[xIndex+x][yIndex] != 2 && !selectedGrains.includes(stateForIteration[xIndex+x][yIndex])) {
             neighborColors.push(stateForIteration[xIndex+x][yIndex]);
         }
         if (yIndex+x < 0 || yIndex+x > canvasHeight-1) continue;
-        if (stateForIteration[xIndex][yIndex+x] != 0 && stateForIteration[xIndex][yIndex+x] != 1 && !selectedGrains.includes(stateForIteration[xIndex][yIndex+x])) {
+        if (stateForIteration[xIndex][yIndex+x] != 0 && stateForIteration[xIndex][yIndex+x] != 1 && stateForIteration[xIndex][yIndex+x] != 2 && !selectedGrains.includes(stateForIteration[xIndex][yIndex+x])) {
             neighborColors.push(stateForIteration[xIndex][yIndex+x]);
         }
     }
@@ -95,7 +95,7 @@ function getFurtherMooreNeighbors(stateForIteration, xIndex, yIndex) {
         for (var y=-1; y<=1; y++) {
             if (x == 0 || y == 0) continue;
             if (xIndex+x < 0 || xIndex+x > canvasWidth-1 || yIndex+y < 0 || yIndex+y > canvasHeight-1) continue;
-            if (stateForIteration[xIndex+x][yIndex+y] != 0 && stateForIteration[xIndex+x][yIndex+y] != 1 && !selectedGrains.includes(stateForIteration[xIndex+x][yIndex+y])) {
+            if (stateForIteration[xIndex+x][yIndex+y] != 0 && stateForIteration[xIndex+x][yIndex+y] != 1 && stateForIteration[xIndex+x][yIndex+y] != 2 && !selectedGrains.includes(stateForIteration[xIndex+x][yIndex+y])) {
                 neighborColors.push(stateForIteration[xIndex+x][yIndex+y]);
             }
         }

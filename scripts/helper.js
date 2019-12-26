@@ -1,5 +1,6 @@
 const COLOR_WHITE = [255, 255, 255];
 const COLOR_BLACK = [0, 0, 0];
+const COLOR_SELECTED = [252, 15, 192];
 
 const TYPE_MOORE = 0;
 const TYPE_VON_NEUMANN = 1;
