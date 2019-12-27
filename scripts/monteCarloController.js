@@ -22,14 +22,13 @@ function countEnergy (neighbours, cellValue) {
             differentNeighbours.push(n);
         }
     }
-    console.log(differentNeighbours.length);
     return differentNeighbours.length;
 }
 
 function drawEnergy (grainEnergy, boundaryEnergy) {
     var boundaries = getGrainBoundaries();
-    var grainColor = getRandomColor();
-    var boundaryColor = (grainEnergy == boundaryEnergy ? grainColor : getRandomColor());
+    var grainColor = getEnergyColor(grainEnergy);
+    var boundaryColor = getEnergyColor(boundaryEnergy);
 
     for (var i=0; i<canvasWidth; i++) {
         for (var j=0; j<canvasHeight; j++) {

@@ -2,6 +2,10 @@ const COLOR_WHITE = [255, 255, 255];
 const COLOR_BLACK = [0, 0, 0];
 const COLOR_SELECTED = [252, 15, 192];
 
+const COLOR_ENERGY_LOW = [4, 93, 197];
+const COLOR_ENERGY_MEDIUM = [17, 136, 255];
+const COLOR_ENERGY_HIGH = [155, 205, 36];
+
 const TYPE_MOORE = 0;
 const TYPE_VON_NEUMANN = 1;
 const TYPE_SHAPE_CONTROL = 2;
@@ -37,6 +41,22 @@ function getMostFrequentColor(colorArray) {
         m = 0;
     }
     return item;
+}
+
+function getEnergyColor (energy) {
+    if (energy <= 2) return COLOR_ENERGY_LOW;
+    else if (energy > 2 && energy < 5) {
+        return [(COLOR_ENERGY_LOW[0] + (COLOR_ENERGY_MEDIUM[0]-COLOR_ENERGY_LOW[0])*(energy/5)), 
+                (COLOR_ENERGY_LOW[1] + (COLOR_ENERGY_MEDIUM[1]-COLOR_ENERGY_LOW[1])*(energy/5)), 
+                (COLOR_ENERGY_LOW[2] + (COLOR_ENERGY_MEDIUM[2]-COLOR_ENERGY_LOW[2])*(energy/5))
+            ];
+    } else if (energy == 5) return COLOR_ENERGY_MEDIUM;
+    else if (energy > 5 && energy < 7) {
+        return [(COLOR_ENERGY_MEDIUM[0] + (COLOR_ENERGY_HIGH[0]-COLOR_ENERGY_MEDIUM[0])*(energy/7)), 
+                (COLOR_ENERGY_MEDIUM[1] + (COLOR_ENERGY_HIGH[1]-COLOR_ENERGY_MEDIUM[1])*(energy/7)), 
+                (COLOR_ENERGY_MEDIUM[2] + (COLOR_ENERGY_HIGH[2]-COLOR_ENERGY_MEDIUM[2])*(energy/7))
+            ];
+    } else return COLOR_ENERGY_HIGH;
 }
 
 function compareColors(color1, color2) {    
