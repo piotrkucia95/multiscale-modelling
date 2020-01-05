@@ -1,7 +1,6 @@
 var isCanvasDrawable = false;
 
 $('#size-button').on('click', (event) => {
-
     var width = $('#x-size-input').val();
     var height = $('#y-size-input').val();
 
@@ -58,9 +57,9 @@ $('#grains-button').on('click', () => {
 });
 
 $('#inclusions-button').on('click', ()=> {
-    var numberOfNucleons = $('#inclusions-number').val();
-    var sizeOfNucleons = $('#inclusions-size').val();
-    var shapeOfNucleons = $('#inclusions-shape').val();
+    var numberOfNucleons    = $('#inclusions-number').val();
+    var sizeOfNucleons      = $('#inclusions-size').val();
+    var shapeOfNucleons     = $('#inclusions-shape').val();
 
     if (!numberOfNucleons) {
         $('#inclusions-error').text('Provide a number of inclusions.');
@@ -78,16 +77,14 @@ $('#inclusions-button').on('click', ()=> {
         return;
     }
 
-    if (isMicrostructureGenerated) {
-        spreadNucleonsOnGrainBoundaries(numberOfNucleons, sizeOfNucleons, shapeOfNucleons, true);
-    } else {
-        spreadNucleonsRandomly(numberOfNucleons, sizeOfNucleons, shapeOfNucleons, true);
-    }
+    if (isMicrostructureGenerated) spreadNucleonsOnGrainBoundaries(numberOfNucleons, sizeOfNucleons, shapeOfNucleons, true);
+    else spreadNucleonsRandomly(numberOfNucleons, sizeOfNucleons, shapeOfNucleons, true);
 });
 
 $('#ca-simulate-button').on('click', () => {
     var neighborhoodType = $('#neighborhood-type').val();
     var probability = $('#probability').val();
+
     if (!probability && neighborhoodType == TYPE_SHAPE_CONTROL) {
         $('#probability-error').text('Enter probability.');
     } else if (neighborhoodType == TYPE_SHAPE_CONTROL && (probability < 1 || probability > 100)) {
@@ -101,19 +98,20 @@ $('#ca-simulate-button').on('click', () => {
 
 $('#select-grains-button').on('click', (event) => {
     var isSelectionOfAll = $('input[name="selection-opt"]:checked').val() == 'all-grains';
-
     if (!selectedGrains.length) updateInputsOnCanvasClear();
+
     var isDualPhase = $('#structure').val() == 0;
+
     for (var i = 0; i < stateArray.length; i++) {
         for (var j = 0; j < stateArray[0].length; j++) {
-            if (isSelectionOfAll && !selectedGrains.includes(stateArray[i][j]) && stateArray[i][j] != 1) {
-                stateArray[i][j] = 0;
+            if (isSelectionOfAll && !selectedGrains.includes(stateArray[i][j]) && stateArray[i][j] != BLACK) {
+                stateArray[i][j] = WHITE;
                 drawPixel(i, j, COLOR_WHITE[0], COLOR_WHITE[1], COLOR_WHITE[2], 255);
             } else if (isSelectionOfAll && isDualPhase){
-                stateArray[i][j] = 2;
+                stateArray[i][j] = SELECTED;
                 drawPixel(i, j, COLOR_SELECTED[0], COLOR_SELECTED[1], COLOR_SELECTED[2], 255);
-            } else if (!isSelectionOfAll && stateArray[i][j] != 2) {
-                stateArray[i][j] = 0;
+            } else if (!isSelectionOfAll && stateArray[i][j] != SELECTED) {
+                stateArray[i][j] = WHITE;
                 drawPixel(i, j, COLOR_WHITE[0], COLOR_WHITE[1], COLOR_WHITE[2], 255);
             }
 
@@ -121,7 +119,6 @@ $('#select-grains-button').on('click', (event) => {
     }
     updateCanvas();
     updateInputsOnGrainsSelect();
-    selectedGrains.length = 0;
 });
 
 $('#color-all-button').on('click', (event) => {
@@ -162,7 +159,7 @@ $('#color-selected-button').on('click', (event) => {
 $('#clear-button').on('click', (event) => {
     for (var i = 0; i < stateArray.length; i++) {
         for (var j = 0; j < stateArray[i].length; j++) {
-            stateArray[i][j] = 0;
+            stateArray[i][j] = WHITE;
             drawPixel(i, j, 0, 0, 0, 0);
         }   
     }
@@ -189,7 +186,7 @@ function addCanvasOnclickHandler() {
         } else if (isMicrostructureGenerated) {
             var isSelectionOfAll = $('input[name="selection-opt"]:checked').val() == 'all-grains';
             var phase = stateArray[event.offsetX][event.offsetY];
-            if (phase == 1) return;
+            if (phase == BLACK) return;
 
             if (isSelectionOfAll) {
                 var hasPhase = false;
@@ -206,11 +203,10 @@ function addCanvasOnclickHandler() {
                     $('#selected-grains').append('<li class="list-group-item"> ' + phaseSqureElement + 'phase id:'  + phase + '</li>');
                     $("#selected-grains").scrollTop($('#selected-grains-container')[0].scrollHeight);
                 }
-
             } else {
 
                 checkIfSameGrainNeighbours(stateArray[event.offsetX][event.offsetY], event.offsetX, event.offsetY);
-                selectedGrains.push(2);
+                selectedGrains.push(SELECTED);
                 updateCanvas();
 
             }
@@ -224,7 +220,7 @@ $('#mc-simulate-button').on('click', () => {
         $('#iterations-error').text('Enter a valid number of iterations.');
     } else {
         $('#iterations-error').text('');
-        startMonteCarlo( parseInt(numberOfIterations) );
+        startMonteCarlo(parseInt(numberOfIterations));
     }
 });
 

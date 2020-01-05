@@ -40,7 +40,6 @@ function updateCanvas () {
 
 function enableCanvasExport () {
     updateInputsOnSimulationEnd();
-    selectedGrains = [];
     isMicrostructureGenerated = true;
     ipcRenderer.send('export:enable');
 }

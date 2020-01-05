@@ -1,25 +1,12 @@
-const COLOR_WHITE = [255, 255, 255];
-const COLOR_BLACK = [0, 0, 0];
-const COLOR_SELECTED = [252, 15, 192];
-
-const COLOR_ENERGY_LOW = [4, 93, 197];
-const COLOR_ENERGY_MEDIUM = [17, 136, 255];
-const COLOR_ENERGY_HIGH = [155, 205, 36];
-
-const TYPE_MOORE = 0;
-const TYPE_VON_NEUMANN = 1;
-const TYPE_SHAPE_CONTROL = 2;
-
-const SHAPE_RANDOM = 0;
-const SHAPE_ROUND = 1;
-const SHAPE_SQUARE = 2;
-
 function getRandomColor() {
     var red = Math.floor(Math.random() * 256);
     var green = Math.floor(Math.random() * 256);
     var blue = Math.floor(Math.random() * 256);
 
-    if ((red == 0 && green == 0 && blue == 0) || (red == 1 && green == 1 && blue == 1)) return getRandomColor();
+    if ((red == COLOR_WHITE[0] && green == COLOR_WHITE[1] && blue == COLOR_WHITE[2]) || 
+        (red == COLOR_BLACK[0] && green == COLOR_BLACK[1] && blue == COLOR_BLACK[2]) ||
+        (red == COLOR_SELECTED[0] && green == COLOR_SELECTED[1] && blue == COLOR_SELECTED[2])) 
+            return getRandomColor();
 
     return [red, green, blue];
 }
@@ -57,9 +44,4 @@ function getEnergyColor (energy) {
                 (COLOR_ENERGY_MEDIUM[2] + (COLOR_ENERGY_HIGH[2]-COLOR_ENERGY_MEDIUM[2])*(energy/7))
             ];
     } else return COLOR_ENERGY_HIGH;
-}
-
-function compareColors(color1, color2) {    
-    if (color1[0] == color2[0] && color1[1] == color2[1] && color1[2] == color2[2]) return true;
-    else return false;
 }

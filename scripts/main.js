@@ -1,10 +1,32 @@
-var stateArray                  = [];
-var colorArray                  = [];
-var selectedGrains              = [];
-var isMicrostructureGenerated   = false;
-var nucleonsNumber               = 0;
+const COLOR_WHITE           = [255, 255, 255];
+const COLOR_BLACK           = [0, 0, 0];
+const COLOR_SELECTED        = [252, 15, 192];
+
+// indices of colors in colorArray
+const WHITE                 = 0;
+const BLACK                 = 1;
+const SELECTED              = 2;
+
+const COLOR_ENERGY_LOW      = [4, 93, 197];
+const COLOR_ENERGY_MEDIUM   = [17, 136, 255];
+const COLOR_ENERGY_HIGH     = [155, 205, 36];
+
+const TYPE_MOORE            = 0;
+const TYPE_VON_NEUMANN      = 1;
+const TYPE_SHAPE_CONTROL    = 2;
+
+const SHAPE_RANDOM          = 0;
+const SHAPE_ROUND           = 1;
+const SHAPE_SQUARE          = 2;
+
+var stateArray              = [];
+var colorArray              = [];
+var selectedGrains          = [];
+var nucleonsNumber          = 0;
+var isMicrostructureGenerated = false;
 
 function initializeStateArray (width, height) {
+    // order important
     colorArray = [COLOR_WHITE, COLOR_BLACK, COLOR_SELECTED];
     stateArray = [];
     selectedGrains = [];
@@ -13,7 +35,7 @@ function initializeStateArray (width, height) {
     for (var i=0; i < width; i++) {
         stateArray[i] = [];
         for (var j=0; j < height; j++) {
-            stateArray[i][j] = 0;
+            stateArray[i][j] = WHITE;
         }
     }
 }
@@ -25,9 +47,9 @@ function getRandomStateColors (numberOfStates) {
 }
 
 function getNextStateColor () {
-    var currentNucleon = 2;
+    var currentNucleon = SELECTED;
     for (var i = 0; i < nucleonsNumber; i++) {
-        if (currentNucleon >= colorArray.length - 1) currentNucleon = 2;
+        if (currentNucleon >= colorArray.length - 1) currentNucleon = SELECTED;
         currentNucleon++;
     }
     return colorArray[currentNucleon];
@@ -63,7 +85,7 @@ function addNucleon (xIndex, yIndex, size, shape, isNucleon) {
         for (var i = -leftIncrease; i <= righIncrease; i++) {
             for (var j = -leftIncrease; j <= righIncrease; j++) {
                 if (xIndex + i < canvasWidth && xIndex + i >= 0 && yIndex + j < canvasHeight && yIndex + j >= 0) {
-                    if (!isNucleon && stateArray[xIndex + i][yIndex + j] != 0) continue; 
+                    if (!isNucleon && stateArray[xIndex + i][yIndex + j] != WHITE) continue; 
                     stateArray[xIndex + i][yIndex + j] = colorArray.indexOf(pixelColor);
                     drawPixel(xIndex + i, yIndex + j, pixelColor[0], pixelColor[1], pixelColor[2], 255);
                 }
@@ -101,13 +123,13 @@ function getGrainBoundaries () {
     var boundaries = [];
     for (var i = 0; i < stateArray.length; i++) {
         for (var j = 0; j < stateArray[i].length; j++) {
-            if (stateArray[i][j] != 0 && stateArray[i][j] != 1) {
+            if (stateArray[i][j] != WHITE && stateArray[i][j] != BLACK) {
                 var pointColor = stateArray[i][j];
                 var isBoundary = false;
-                for (var x=-1; x<=1; x++) {
-                    for (var y=-1; y<=1; y++) {
+                for (var x = -1; x <= 1; x++) {
+                    for (var y = -1; y <= 1; y++) {
                         if (i+x < 0 || i+x > canvasWidth-1 || j+y < 0 || j+y > canvasHeight-1) continue;
-                        if (stateArray[i+x][j+y] != pointColor && stateArray[i+x][j+y] != 1) {
+                        if (stateArray[i+x][j+y] != pointColor && stateArray[i+x][j+y] != BLACK) {
                             isBoundary = true
                         }
                     }
@@ -138,7 +160,7 @@ function simulateGrainGrowth (neighborhoodType, probability) {
 
     for (var i = 0; i < canvasWidth; i++) {
         for (var j = 0; j < canvasHeight; j++) {
-            checkNeighbors(currentState, i, j, probability);
+            if (currentState[i][j] == WHITE) checkNeighbors(currentState, i, j, probability);
         }
     }
 
@@ -157,7 +179,7 @@ function startSimulation (neighborhoodType, probability) {
 function checkIfFinished () {
     for (var i = 0; i < stateArray.length; i++) {
         for (var j = 0; j < stateArray[0].length; j++) {
-            if (stateArray[i][j] == 0) {
+            if (stateArray[i][j] == WHITE) {
                 return false;
             }
         }
@@ -187,9 +209,9 @@ function startMonteCarlo (iterations) {
 }
 
 function checkIfSameGrainNeighbours(colorIndex, xIndex, yIndex) {
-    if (stateArray[xIndex][yIndex] == 1 || stateArray[xIndex][yIndex] == 2) return;
+    if (stateArray[xIndex][yIndex] == BLACK || stateArray[xIndex][yIndex] == SELECTED) return;
 
-    stateArray[xIndex][yIndex] = 2;
+    stateArray[xIndex][yIndex] = SELECTED;
     drawPixel(xIndex, yIndex, COLOR_SELECTED[0], COLOR_SELECTED[1], COLOR_SELECTED[2], 255);
 
     if ((xIndex - 1 >= 0) && (stateArray[xIndex-1][yIndex] == colorIndex)) 
