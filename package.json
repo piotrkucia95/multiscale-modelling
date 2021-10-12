@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/piotrkucia95/multiscale-modelling#readme",
   "dependencies": {
-    "electron": "^6.0.12",
+    "electron": "^11.5.0",
     "electron-packager": "^14.1.0",
     "file-saver": "^2.0.2"
   }
